@@ -13,6 +13,7 @@ pipeline {
             steps{
                 sh script: """
                     set -x
+                    cd /home/ubuntu/environment/todo-list-aws/
                     git branch -a
                     git checkout -b develop origin/develop
                     git checkout -b master origin/master
