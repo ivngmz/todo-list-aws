@@ -10,6 +10,7 @@ pipeline {
             }
         }
         stage('Merge'){
+            withCredentials([git credentialsId: 'b0770b7e-2b4d-4ab9-8b6a-e2002fb60da0', url: 'https://github.com/ivngmz/todo-list-aws.git']){
             steps{
                 sh script: '''
                     set -x
@@ -22,7 +23,7 @@ pipeline {
                 sshagent(['github']) {
                     sh "git push origin master"
                 }
-
+              }
             }
         }
         stage('Production'){
