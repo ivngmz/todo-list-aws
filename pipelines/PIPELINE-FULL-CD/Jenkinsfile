@@ -19,7 +19,7 @@ pipeline {
                     git merge develop
                 """, label: "Merging code to master"
                 sshagent(['github']) {
-                    git remote set-url origin git@github.com:ivngmz/todo-list-aws.git
+                    git remote set-url origin https://github.com/ivngmz/todo-list-aws.git
                     sh "git push origin master"
                 }
             }
