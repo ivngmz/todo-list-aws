@@ -199,7 +199,17 @@ class TestDatabaseFunctions(unittest.TestCase):
         # Testing file functions
         self.assertRaises(TypeError, delete_item("", self.dynamodb))
         print ('End: test_delete_todo_error')
-
+    
+    def test_tabla(self):
+        print ('---------------------')
+        print ('Start: test_tabla')
+        self.table.delete()
+        self.dynamodb=None
+        from src.todoList import get_table
+        get_table(self)
+        self.is_local = 'true'
+        self.uuid = "123e4567-e89b-12d3-a456-426614174000"
+        self.text = "Aprender DevOps y Cloud en la UNIR"
 
 
 if __name__ == '__main__':
