@@ -200,19 +200,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertRaises(TypeError, delete_item("", self.dynamodb))
         print ('End: test_delete_todo_error')
     
-    @mock_dynamodb2
-    def test_tabla(self):
-        print ('---------------------')
-        print ('Start: test_tabla')
-        from src.todoList import get_table
-        conn = boto3.client("dynamodb", region_name="us-west-2")
-        conn.create_table(
-                TableName='prueba',
-                KeySchema=[{"AttributeName": "id", "KeyType": "HASH"}],
-                AttributeDefinitions=[{"AttributeName": "id", "AttributeType": "S"}],
-                ProvisionedThroughput={"ReadCapacityUnits": 5, "WriteCapacityUnits": 5},
-                )
-        conn.get_tables()["TableNames"].should.equal(TableName)
 
 if __name__ == '__main__':
     unittest.main()
