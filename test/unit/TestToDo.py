@@ -109,27 +109,28 @@ class TestDatabaseFunctions(unittest.TestCase):
         
     def test_get_table_error_KeyError(self):
         print ('---------------------')
-        print ('Start: test_get_todo_error')
+        print ('Start: test_get_table_error_KeyError')
         from src.todoList import get_item
         try:
             response = get_item("")
             print(response)
         except KeyError:
             print("Se ha generado la excepcion:KeyError")
-        print ('End: test_get_todo_error')
+        print ('End: test_get_table_error_KeyError')
         
     def test_get_todo_error_ClientError(self):
         print ('---------------------')
-        print ('Start: test_get_todo_error')
+        print ('Start: test_get_todo_error_ClientError')
         from src.todoList import get_item
         try:
             get_item("",self.dynamodb)
+            raise pytest.ClientError
         except botocore.exceptions.ClientError as error:
-            print("Se ha levantado la excepcion")
+            print("Se ha levantado la excepcion:ClientError")
             raise error
         except botocore.exceptions.ParamValidationError as error:
             raise ValueError('The parameters you provided are incorrect: {}'.format(error))
-        print ('End: test_get_todo_error')
+        print ('End: test_get_todo_error_ClientError')
     
     def test_list_todo(self):
         print ('---------------------')
