@@ -112,9 +112,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Start: test_get_todo_error')
         from src.todoList import get_item
         try:
-            response = get_item("valor erroneo", self.dynamodb)
+            response = get_item("")
         except botocore.exceptions.ClientError as error:
             print("Se ha generado la excepcion")
+            print(error.response.message)
         print ('End: test_get_todo_error')
     
     def test_list_todo(self):
@@ -156,7 +157,7 @@ class TestDatabaseFunctions(unittest.TestCase):
 
     def test_update_todo_error(self):
         print ('---------------------')
-        print ('Start: atest_update_todo_error')
+        print ('Start: test_update_todo_error')
         from src.todoList import put_item
         from src.todoList import update_item
         updated_text = "Aprender más cosas que DevOps y Cloud en la UNIR"
