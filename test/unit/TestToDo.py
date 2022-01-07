@@ -176,6 +176,13 @@ class TestDatabaseFunctions(unittest.TestCase):
         responsePut = put_item(self.text, self.dynamodb)
         print ('Response PutItem' + str(responsePut))
         self.assertRaises(
+            ClientError,
+            update_item(
+                updated_text,
+                self.uuid,
+                "",
+                self.dynamodb))
+        self.assertRaises(
             Exception,
             update_item(
                 updated_text,
@@ -191,13 +198,6 @@ class TestDatabaseFunctions(unittest.TestCase):
                 self.dynamodb))
         self.assertRaises(
             Exception,
-            update_item(
-                updated_text,
-                self.uuid,
-                "",
-                self.dynamodb))
-        self.assertRaises(
-            ClientError,
             update_item(
                 updated_text,
                 self.uuid,
