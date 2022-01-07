@@ -124,7 +124,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import get_item
         try:
             get_item("",self.dynamodb)
-            raise pytest.ClientError
+            raise pytest.ClientError()
         except botocore.exceptions.ClientError as error:
             print("Se ha levantado la excepcion:ClientError")
             raise error
