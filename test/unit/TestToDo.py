@@ -110,26 +110,15 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('---------------------')
         print ('Start: test_get_todo_error')
         from src.todoList import get_item
-        # Testing file functions
-        # Table mock
-        # responsePut = put_item(self.text, self.dynamodb)
-        # print ('Response put_item:' + str(responsePut))
-        # idItem = json.loads(responsePut['body'])['id']
-        # print ('Id item:' + idItem)
-        # self.assertEqual(200, responsePut['statusCode'])
-        # responseGet = get_item(
-        #         idItem,
-        #         self.dynamodb)
-        # print ('Response Get:' + str(responseGet))
-        # self.assertEqual(
-        #     self.text,
-        #     responseGet['text'])
-        # print ('End: test_get_todo')
-        
-        with pytest.raises(ClientError) as ex:
-            get_item("",self.dynamodb)
-        ex.value.response["Error"]["Code"].should.equal("KeyError")
-        print ('End: test_get_todo_error')
+        response = get_item("0", self.dynamodb)
+        print(response.ClientError)
+        print("end response<<<<")
+        with pytest.raises(ClientError) as ex:  
+            get_item("0", self.dynamodb)
+        ex.value.response["Error"]["Code"].should.equal("ValidationException")
+        ex.value.response["Error"]["Message"].should.equal(
+            "No found"
+        )
     
     def test_list_todo(self):
         print ('---------------------')
