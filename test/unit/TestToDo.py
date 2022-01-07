@@ -70,13 +70,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         response = put_item(self.text, self.dynamodb)
         print ('Response put_item:' + str(response))
         self.assertEqual(200, response['statusCode'])
-        # Table mock
-        # with pytest.raises(ClientError) as ex:
-        #     put_item("a_terribly_misguided_id_attribute")
-        # ex.value.response["Error"]["Message"].should.equal(
-        #     "One or more parameter values were invalid: Missing the key structure_id in the item"
-        # )
-        # ex.value.response["Error"]["Code"].should.equal("ValidationException")
+        #Table mock
+        with pytest.raises(ClientError) as ex:
+            put_item("","")
+        ex.value.response["Error"]["Code"].should.equal("KeyError")
         print ('End: test_put_todo')
 
     def test_put_todo_error(self):
@@ -88,8 +85,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         # Table mock
         self.assertRaises(Exception, put_item("", self.dynamodb))
         self.assertRaises(Exception, get_item("", self.dynamodb))
-        self.assertRaises(Exception, put_item("", ""))
-        self.assertRaises(Exception, get_item("", ""))
         print ('End: test_put_todo_error')
 
     def test_get_todo(self):
