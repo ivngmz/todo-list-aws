@@ -112,7 +112,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Start: test_get_todo_error')
         from src.todoList import get_item
         try:
-            response = get_item()
+            response = get_item("","")
         except botocore.exceptions.ClientError as error:
             print("Se ha generado la excepcion")
             print(error.response.message)
