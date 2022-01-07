@@ -111,7 +111,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Start: test_get_todo_error')
         from src.todoList import get_item
         response = get_item("0", self.dynamodb)
-        print("Imprimiendo" + response)
         with pytest.raises(ClientError) as ex:  
             get_item("0", self.dynamodb)
         ex.value.response["Error"]["Code"].should.equal("ValidationException")
