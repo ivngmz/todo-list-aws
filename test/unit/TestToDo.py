@@ -198,7 +198,7 @@ class TestDatabaseFunctions(unittest.TestCase):
                 self.dynamodb))
         with self.assertRaises(botocore.exceptions.ClientError):
             update_item(
-                "",
+                "update_text",
                 "",
                 "",
                 self.dynamodb)
