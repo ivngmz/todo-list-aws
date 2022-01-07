@@ -72,7 +72,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertEqual(200, response['statusCode'])
         # Table mock
         with pytest.raises(ClientError) as ex:
-            put_item(Item={"a_terribly_misguided_id_attribute": "abcdef"})
+            put_item("a_terribly_misguided_id_attribute")
         ex.value.response["Error"]["Message"].should.equal(
             "One or more parameter values were invalid: Missing the key structure_id in the item"
         )
