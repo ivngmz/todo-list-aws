@@ -107,28 +107,27 @@ class TestDatabaseFunctions(unittest.TestCase):
             responseGet['text'])
         print ('End: test_get_todo')
         
-    def test_get_todo_error_KeyError(self):
+    def test_get_table_error_KeyError(self):
         print ('---------------------')
         print ('Start: test_get_todo_error')
         from src.todoList import get_item
-        ENDPOINT_OVERRIDE="URLFalsa"
         try:
             response = get_item("")
             print(response)
         except KeyError:
             print("Se ha generado la excepcion:KeyError")
-        ENDPOINT_OVERRIDE="URLFalsa"
         print ('End: test_get_todo_error')
         
     def test_get_todo_error_ClientError(self):
         print ('---------------------')
         print ('Start: test_get_todo_error')
         from src.todoList import get_item
-        try:
-            response = get_item("")
-        except botocore.exceptions.ClientError as error:
-            print("Se ha generado la excepcion:ClientError")
-            print(error.response.message)
+        with pytest.raises(ClientError) as ex:
+            get_item("",self.dynamodb)
+            print("Se ha levantado la excepcion")
+            err = ex.value.response["Error"]
+            err["Code"].should.equal("ValidationException")
+            err["Message"].should.equal("Return values set to invalid value")
         print ('End: test_get_todo_error')
     
     def test_list_todo(self):
