@@ -114,14 +114,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         try:
             response = get_item("")
         except botocore.exceptions.ClientError as error:
-            print("Se ha generado la excepcion")
+            print("Se ha generado la excepcion:ClientError")
             print(error.response.message)
         except KeyError:
-            print("Se ha generado la excepcion")
-            print(error.response.message)
-        except UnboundLocalError:
-            print("Se ha generado la excepcion")
-            print(error.response.message)
+            print("Se ha generado la excepcion:KeyError")
         print ('End: test_get_todo_error')
     
     def test_list_todo(self):
