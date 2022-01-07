@@ -125,9 +125,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         with pytest.raises(ClientError) as ex:
             get_item("",self.dynamodb)
             print("Se ha levantado la excepcion")
-            err = ex.value.response["Error"]
-            err["Code"].should.equal("ValidationException")
-            err["Message"].should.equal("Return values set to invalid value")
         print ('End: test_get_todo_error')
     
     def test_list_todo(self):
