@@ -196,16 +196,7 @@ class TestDatabaseFunctions(unittest.TestCase):
                 self.uuid,
                 "",
                 self.dynamodb))
-        try:
-            self.assertRaises(
-                botocore.exceptions.ClientError,
-                update_item(
-                    "update_text",
-                    "",
-                    "",
-                    self.dynamodb))
-        except AssertionError as ex:
-            print("No me hace todo el caso que quiero")
+        
         print ('End: atest_update_todo_error')
 
     def test_delete_todo(self):
