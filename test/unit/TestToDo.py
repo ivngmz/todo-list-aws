@@ -4,6 +4,7 @@ import unittest
 import pytest
 import boto3
 from moto import mock_dynamodb2
+import botocore
 from botocore.exceptions import ClientError
 import sys
 import os
@@ -110,13 +111,11 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('---------------------')
         print ('Start: test_get_todo_error')
         from src.todoList import get_item
-        response = get_item("0", self.dynamodb)
-        with pytest.raises(ClientError) as ex:  
-            get_item("0", self.dynamodb)
-        ex.value.response["Error"]["Code"].should.equal("ValidationException")
-        ex.value.response["Error"]["Message"].should.equal(
-            "No found"
-        )
+        try:
+            response = get_item("valor erroneo", self.dynamodb)
+        except botocore.exceptions.ClientError as error:
+            print("Se ha generado la excepcion")
+        print ('End: test_get_todo_error')
     
     def test_list_todo(self):
         print ('---------------------')
