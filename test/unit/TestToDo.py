@@ -122,7 +122,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('---------------------')
         print ('Start: test_get_todo_error')
         from src.todoList import get_item
-        with pytest.raises(ClientError) as ex:
+        with pytest.raises(botocore.exceptions.ClientError) as ex:
             get_item("",self.dynamodb)
             print("Se ha levantado la excepcion")
         print ('End: test_get_todo_error')
