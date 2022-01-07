@@ -176,13 +176,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         responsePut = put_item(self.text, self.dynamodb)
         print ('Response PutItem' + str(responsePut))
         self.assertRaises(
-            ClientError,
-            update_item(
-                updated_text,
-                self.uuid,
-                "",
-                self.dynamodb))
-        self.assertRaises(
             Exception,
             update_item(
                 updated_text,
@@ -203,6 +196,12 @@ class TestDatabaseFunctions(unittest.TestCase):
                 self.uuid,
                 "",
                 self.dynamodb))
+        with self.assertRaises(botocore.exceptions.ClientError):
+            update_item(
+                "",
+                "",
+                "",
+                self.dynamodb)
         print ('End: atest_update_todo_error')
 
     def test_delete_todo(self):
