@@ -111,9 +111,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('---------------------')
         print ('Start: test_get_todo_error')
         from src.todoList import get_item
+        ENDPOINT_OVERRIDE="URLFalsa"
         try:
             response = get_item("")
-            print(error.response.message)
+            print(response)
         except KeyError:
             print("Se ha generado la excepcion:KeyError")
         ENDPOINT_OVERRIDE="URLFalsa"
