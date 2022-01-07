@@ -107,7 +107,19 @@ class TestDatabaseFunctions(unittest.TestCase):
             responseGet['text'])
         print ('End: test_get_todo')
         
-    def test_get_todo_error(self):
+    def test_get_todo_error_KeyError(self):
+        print ('---------------------')
+        print ('Start: test_get_todo_error')
+        from src.todoList import get_item
+        try:
+            response = get_item("")
+            print(error.response.message)
+        except KeyError:
+            print("Se ha generado la excepcion:KeyError")
+        ENDPOINT_OVERRIDE="URLFalsa"
+        print ('End: test_get_todo_error')
+        
+    def test_get_todo_error_ClientError(self):
         print ('---------------------')
         print ('Start: test_get_todo_error')
         from src.todoList import get_item
@@ -116,8 +128,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         except botocore.exceptions.ClientError as error:
             print("Se ha generado la excepcion:ClientError")
             print(error.response.message)
-        except KeyError:
-            print("Se ha generado la excepcion:KeyError")
         print ('End: test_get_todo_error')
     
     def test_list_todo(self):
