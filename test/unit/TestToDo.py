@@ -122,9 +122,13 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('---------------------')
         print ('Start: test_get_todo_error')
         from src.todoList import get_item
-        with pytest.raises(botocore.exceptions.ClientError) as ex:
+        try:
             get_item("",self.dynamodb)
+        except botocore.exceptions.ClientError as error:
             print("Se ha levantado la excepcion")
+            raise error
+        except botocore.exceptions.ParamValidationError as error:
+            raise ValueError('The parameters you provided are incorrect: {}'.format(error))
         print ('End: test_get_todo_error')
     
     def test_list_todo(self):
