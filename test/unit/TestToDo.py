@@ -119,6 +119,9 @@ class TestDatabaseFunctions(unittest.TestCase):
         except KeyError:
             print("Se ha generado la excepcion")
             print(error.response.message)
+        except UnboundLocalError:
+            print("Se ha generado la excepcion")
+            print(error.response.message)
         print ('End: test_get_todo_error')
     
     def test_list_todo(self):
