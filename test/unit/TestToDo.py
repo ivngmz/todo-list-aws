@@ -1,8 +1,10 @@
 # from pprint import pprint
 import warnings
 import unittest
+import pytest
 import boto3
 from moto import mock_dynamodb2
+from botocore.exceptions import ClientError
 import sys
 import os
 import json
@@ -69,7 +71,12 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Response put_item:' + str(response))
         self.assertEqual(200, response['statusCode'])
         # Table mock
-        # self.assertEqual(200, response['ResponseMetadata']['HTTPStatusCode'])
+        with pytest.raises(ClientError) as ex:
+            put_item(Item={"a_terribly_misguided_id_attribute": "abcdef"})
+        ex.value.response["Error"]["Message"].should.equal(
+            "One or more parameter values were invalid: Missing the key structure_id in the item"
+        )
+        ex.value.response["Error"]["Code"].should.equal("ValidationException")
         print ('End: test_put_todo')
 
     def test_put_todo_error(self):
