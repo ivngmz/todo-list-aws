@@ -91,14 +91,6 @@ class TestDatabaseFunctions(unittest.TestCase):
                 print("Imprimo Error")
         except AttributeError as e:
             print("Imprimo Error")
-        # with self.assertRaises(botocore.exceptions.ClientError):
-        #     update_item(
-        #         "",
-        #         "",
-        #         "",
-        #         self.dynamodb
-        #     )
-        print ('End: test_put_todo_error')
 
     def test_get_todo(self):
         print ('---------------------')
@@ -220,6 +212,16 @@ class TestDatabaseFunctions(unittest.TestCase):
                 self.dynamodb
             )
         assert exc_info.value.response['Error']['Code'].should.equal("Failed")
+        
+        MSG_TEMPLATE = (
+        'An error occurred (400) when calling the put_item '
+        'operation1:lse')
+        
+        try:
+            with pytest.raises(botocore.exceptions.ClientError(MSG_TEMPLATE,update_item(updated_text,self.uuid,"",self.dynamodb))) as exc_info:
+                print("Imprimo Error")
+        except AttributeError as e:
+            print("Imprimo Error")
         
         print ('End: atest_update_todo_error')
 
