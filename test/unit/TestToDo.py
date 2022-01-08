@@ -54,9 +54,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Start: test_describe_missing_table_boto3')
         conn = boto3.client('dynamodb', region_name='us-east-1')
         with pytest.raises(ClientError) as exc_info:
-            error_code = exc_info.response['Error']['Code']
-            print("Levantada excepcion: " + str(error_code))
-        exc_info.value.response["Error"]["Code"].should.equal("AttributeError")
+            print("Levantada excepcion: " + str(exc_info))
+        exc_info.value.response["Error"]["Code"].should.equal("ResourceNotFoundException")
         print ('End: test_describe_missing_table_boto3')
     
     def test_table_exists(self):
@@ -71,18 +70,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertIn(tableName, self.table.name)
         #self.assertIn('todoTable', self.table_local.name)
         print ('End: test_table_exists')
-
-    def test_table_exists_error(self):
-        conn = boto3.client('dynamodb', region_name='us-east-1')
-        print ('---------------------')
-        print ('Start: test_table_exists_error')
-        from src.todoList import get_item
-        from src.todoList import create_todo_table
-        print("Comprobando la existencia de la tabla antes borrado...")
-        self.table.dynamodb = None
-        print("Comprobando la existencia de la tabla tras borrado...")
-        self.assertTrue(self.dynamodb.name)  # check if we got a result
-        print ('End: test_table_exists_error')
 
     def test_get_table_error_KeyError(self):
         print ('---------------------')
