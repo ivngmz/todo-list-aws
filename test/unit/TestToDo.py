@@ -12,7 +12,6 @@ import sys
 import os
 import json
 from botocore.utils import get_service_module_name
-from botocore.utils import errorfactory
 
 @mock_dynamodb2_deprecated
 @mock_dynamodb2
