@@ -68,8 +68,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import get_item
         from src.todoList import create_todo_table
         try:
-            self.table.delete()
-        except ClientError as exc_info:
+            self.tearDown
+        except Exception as exc_info:
             print("Se genero una excepcion de tipo: ResourceNotFoundException: " + str(exc_info))
         self.assertTrue(self.table)  # check if we got a result
         print ('End: test_table_exists_error')
