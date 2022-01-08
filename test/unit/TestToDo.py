@@ -75,7 +75,7 @@ class TestDatabaseFunctions(unittest.TestCase):
             conn.create_todo_table
         except Exception:
             print("Se ha generado la excepcion:Generica")
-            raise conn.table.AssertionError()
+            raise conn.AssertionError()
 
         try:
             response = get_item("")
