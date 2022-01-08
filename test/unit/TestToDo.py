@@ -70,13 +70,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         conn = boto3.client("dynamodb", region_name="us-west-2")
         from src.todoList import get_item
         try:
-            response = conn.get_item("")
+            response = get_item("")
             print (response)
         except KeyError:
             print("Se ha generado la excepcion:KeyError")
-        # with pytest.raises(conn.get_item("").ClientError) as exc_info:
-        #     print ("Levantada excepcion")
-        # print ('End: test_get_table_error_KeyError')        
 
     def test_put_todo(self):
         print ('---------------------')
