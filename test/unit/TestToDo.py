@@ -224,13 +224,13 @@ class TestDatabaseFunctions(unittest.TestCase):
         # Testing file functions
         # Table mock
         responsePut = put_item(self.text, self.dynamodb)
-        print ('Total Items previo a put: ' + get_items(self.dynamodb))
+        print ('Total Items previo a put: ' + str(get_items(self.dynamodb)))
         print ('Response PutItem' + str(responsePut))
         idItem = json.loads(responsePut['body'])['id']
         print ('Id item: ' + idItem)
         responseDel = print(delete_item(idItem, self.dynamodb))
         print ('Item ' + idItem + ' deleted succesfully' + str(responseDel))
-        print ('Total Items tras delete: ' + get_items(self.dynamodb))
+        print ('Total Items tras delete: ' + str(get_items(self.dynamodb)))
         self.assertTrue(len(get_items(self.dynamodb)) == 0)
         print ('End: test_delete_todo')
 
