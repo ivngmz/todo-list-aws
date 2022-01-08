@@ -5,6 +5,9 @@ import pytest
 import boto3
 from moto import mock_dynamodb2
 import botocore
+from botocore.exceptions import errorfactory
+from botocore.exceptions import ResourceNotFoundException
+from botocore.exceptions import ClientError
 import sys
 import os
 import json
