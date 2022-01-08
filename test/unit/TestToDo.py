@@ -63,16 +63,13 @@ class TestDatabaseFunctions(unittest.TestCase):
         #self.assertIn('todoTable', self.table_local.name)
         print ('End: test_table_exists')
 
-    def test_table_exists_error(self):
-        print ('---------------------')
-        print ('Start: test_table_exists_error')
-        from src.todoList import get_item
-        from src.todoList import create_todo_table
-        print("Comprobando la existencia de la tabla antes borrado...")
-        self.table.dynamodb = None
-        print("Comprobando la existencia de la tabla tras borrado...")
-        self.assertTrue(self.dynamodb.name)  # check if we got a result
-        print ('End: test_table_exists_error')
+    def test_describe_missing_table_boto3(self):
+        print ('Start: test_describe_missing_table_boto3')
+        with pytest.raises(self.dynamodb.ClientError) as exc_info:
+            error_code = exc_info.response['Error']['Code']
+            print(error_code)
+        exc_info.value.response["Error"]["Code"].should.equal("ResourceNotFoundException")
+        print ('End: test_describe_missing_table_boto3')
     
     def test_put_todo(self):
         print ('---------------------')
