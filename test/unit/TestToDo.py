@@ -59,7 +59,32 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertIn(tableName, self.table.name)
         #self.assertIn('todoTable', self.table_local.name)
         print ('End: test_table_exists')
-        
+
+    def test_table_exists_error(self):
+        print ('---------------------')
+        print ('Start: test_table_exists_error')
+        self.table.table_status != 'INACTIVE'
+        self.assertTrue(self.table)  # check if we got a result
+        #self.assertTrue(self.table_local)  # check if we got a result
+
+        print('Table name:' + self.table.name)
+        tableName = os.environ['DYNAMODB_TABLE'];
+        # check if the table name is 'ToDo'
+        self.assertIn(tableName, self.table.name)
+        self.assertTrue(self.table.table_status != 'ACTIVE')
+        #self.assertIn('todoTable', self.table_local.name)
+        print ('End: test_table_exists_error')
+
+    def test_get_table_error_KeyError(self):
+        print ('---------------------')
+        print ('Start: test_get_table_error_KeyError')
+        from src.todoList import get_item
+        try:
+            response = get_item("")
+            print(response)
+        except KeyError:
+            print("Se ha generado la excepcion:KeyError")
+        print ('End: test_get_table_error_KeyError')        
 
     def test_put_todo(self):
         print ('---------------------')
@@ -113,17 +138,6 @@ class TestDatabaseFunctions(unittest.TestCase):
             self.text,
             responseGet['text'])
         print ('End: test_get_todo')
-        
-    def test_get_table_error_KeyError(self):
-        print ('---------------------')
-        print ('Start: test_get_table_error_KeyError')
-        from src.todoList import get_item
-        try:
-            response = get_item("")
-            print(response)
-        except KeyError:
-            print("Se ha generado la excepcion:KeyError")
-        print ('End: test_get_table_error_KeyError')
         
     def test_get_todo_error_ClientError(self):
         print ('---------------------')
@@ -209,10 +223,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         'operation1:lse')
         
         try:
-            with pytest.raises(botocore.exceptions.ClientError(MSG_TEMPLATE,update_item("@@@@",self.uuid,"",self.dynamodb))) as exc_info:
+            with pytest.raises(botocore.exceptions.ClientError(MSG_TEMPLATE,update_item("@@@@","","",self.dynamodb))) as exc_info:
                 print("Imprimo Error: " + str(exc_info))
         except AttributeError as e:
-            responseUpdateError = update_item("@@@@",self.uuid,"",self.dynamodb)
+            responseUpdateError = update_item("@@@@","","",self.dynamodb)
             print("Imprimo Error: " + str(responseUpdateError))
         
         print ('End: test_update_todo_error')
