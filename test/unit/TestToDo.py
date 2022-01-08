@@ -63,17 +63,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         #self.assertIn('todoTable', self.table_local.name)
         print ('End: test_table_exists')
 
-    def test_get_table_error_KeyError(self):
-        print ('---------------------')
-        print ('Start: test_get_table_error_KeyError')
-        from src.todoList import get_item
-        try:
-            response = get_item("")
-            print(response)
-        except KeyError:
-            print("Se ha generado la excepcion:KeyError")
-        print ('End: test_get_table_error_KeyError')        
-
     def test_put_todo(self):
         print ('---------------------')
         print ('Start: test_put_todo')
@@ -235,11 +224,13 @@ class TestDatabaseFunctions(unittest.TestCase):
         # Testing file functions
         # Table mock
         responsePut = put_item(self.text, self.dynamodb)
+        print ('Total Items previo a put: ' + get_items(self.dynamodb))
         print ('Response PutItem' + str(responsePut))
         idItem = json.loads(responsePut['body'])['id']
-        print ('Id item:' + idItem)
-        delete_item(idItem, self.dynamodb)
-        print ('Item deleted succesfully')
+        print ('Id item: ' + idItem)
+        responseDel = print(delete_item(idItem, self.dynamodb))
+        print ('Item ' + idItem + ' deleted succesfully' + str(responseDel))
+        print ('Total Items tras delete: ' + get_items(self.dynamodb))
         self.assertTrue(len(get_items(self.dynamodb)) == 0)
         print ('End: test_delete_todo')
 
