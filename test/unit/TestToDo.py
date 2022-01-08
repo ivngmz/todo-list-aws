@@ -52,9 +52,10 @@ class TestDatabaseFunctions(unittest.TestCase):
 
     def test_describe_missing_table_boto3(self):
         print ('Start: test_describe_missing_table_boto3')
-        with pytest.raises(self.dynamodb.ClientError) as ex:
-            self.dynamodb.describe_table(TableName="messages")
-        ex.value.response["Error"]["Code"].should.equal("ResourceNotFoundException")
+        with pytest.raises(self.dynamodb.ClientError) as exc_info:
+            error_code = exc_info.response['Error']['Code']
+            print(error_code)
+        exc_info.value.response["Error"]["Code"].should.equal("AttributeError")
         print ('End: test_describe_missing_table_boto3')
     
     def test_table_exists(self):
@@ -119,7 +120,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         'operation1:lse')
         try:
             with pytest.raises(self.dynamodb.ClientError(MSG_TEMPLATE,put_item("", self.dynamodb))) as exc_info:
-                print("Imprimo Error: " + str(exc_info.ClientError))
+                error_code = exc_info.response['Error']['Code']
+                print(error_code)
         except AttributeError as e:
             print("Imprimo Error")
 
@@ -152,7 +154,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         try:
             get_item("Esto no existe",self.dynamodb)
         except self.dynamodb.ClientError as exc_info:
-            print("Se ha levantado la excepcion: "  + str(exc_info.ClientError))
+            error_code = exc_info.response['Error']['Code']
+            print(error_code)
         print ('End: test_get_todo_error_ClientError')
     
     def test_list_todo(self):
@@ -230,7 +233,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         
         try:
             with pytest.raises(self.dynamodb.ClientError(MSG_TEMPLATE,update_item("","","",""))) as exc_info:
-                print("Imprimo Error: " + str(exc_info.ClientError))
+                error_code = exc_info.response['Error']['Code']
+                print(error_code)
         except AttributeError as e:
             responseUpdateError = update_item("@@@@","","false",self.dynamodb)
             print("Imprimo Error: " + str(responseUpdateError))
@@ -289,7 +293,8 @@ class TestDatabaseFunctions(unittest.TestCase):
                 self.dynamodb))
         try:
             with pytest.raises(self.dynamodb.ClientError(MSG_TEMPLATE,delete_item("@@@@",self.dynamodb))) as exc_info:
-                print("Imprimo Error: " + str(exc_info.ClientError))
+                error_code = exc_info.response['Error']['Code']
+                print(error_code)
         except AttributeError as exc_info:
             responseDeleteError = delete_item("@@@@",self.dynamodb)
             print("Imprimo Error: " + str(exc_info))
