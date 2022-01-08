@@ -211,7 +211,7 @@ class TestDatabaseFunctions(unittest.TestCase):
                 "",
                 self.dynamodb))
         
-        with pytest.raises(botocore.exceptions.ClientError("failed",update_item) as exc_info:
+        with pytest.raises(botocore.exceptions.ClientError("failed",update_item)) as exc_info:
             update_item(
                 "",
                 "",
