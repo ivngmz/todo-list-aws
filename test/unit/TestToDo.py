@@ -65,7 +65,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Start: test_table_exists_error')
         from src.todoList import get_item
         from src.todoList import create_todo_table
-        self.table.delete()
+        try:
+            self.table.delete()
+        except botocore.errorfactory.ResourceNotFoundException as exc_info:
+            print("Se genero una excepcion de tipo: ResourceNotFoundException: " + str(exc_info))
         self.assertTrue(self.table)  # check if we got a result
         #self.assertTrue(self.table_local)  # check if we got a result
     
@@ -260,9 +263,9 @@ class TestDatabaseFunctions(unittest.TestCase):
         # Testing file functions
         responsePut = put_item(self.text, self.dynamodb)
         idItem = json.loads(responsePut['body'])['id']
-        print ('Id item:' + idItem)
-        delete_item(idItem, self.dynamodb)
-        delete_item(idItem, self.dynamodb)
+        print ('Intento Borrar dos veces el Id item:' + idItem)
+        print(delete_item(idItem, self.dynamodb))
+        print(delete_item(idItem, self.dynamodb))
         
         self.assertRaises(TypeError, delete_item("", self.dynamodb))
         
@@ -288,9 +291,9 @@ class TestDatabaseFunctions(unittest.TestCase):
         try:
             with pytest.raises(botocore.exceptions.ClientError(MSG_TEMPLATE,delete_item("@@@@",self.dynamodb))) as exc_info:
                 print("Imprimo Error: " + str(exc_info))
-        except AttributeError as e:
+        except AttributeError as exc_info:
             responseDeleteError = delete_item("@@@@",self.dynamodb)
-            print("Imprimo Error: " + str(responseDeleteError))
+            print("Imprimo Error: " + str(exc_info))
         print ('End: test_delete_todo_error')
     
 
