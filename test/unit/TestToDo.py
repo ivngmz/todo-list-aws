@@ -81,8 +81,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import put_item
         from src.todoList import get_item
         # Table mock
-        self.assertRaises(Exception, put_item("", self.dynamodb))
-        self.assertRaises(Exception, get_item("", self.dynamodb))
+        self.assertRaises(botocore.exceptions.ClientError, put_item("", self.dynamodb))
+        self.assertRaises(botocore.exceptions.ClientError, get_item("", self.dynamodb))
         print ('End: test_put_todo_error')
 
     def test_get_todo(self):
