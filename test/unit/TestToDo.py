@@ -63,6 +63,17 @@ class TestDatabaseFunctions(unittest.TestCase):
         #self.assertIn('todoTable', self.table_local.name)
         print ('End: test_table_exists')
 
+    def test_table_exists_error(self):
+        print ('---------------------')
+        print ('Start: test_table_exists_error')
+        from src.todoList import get_item
+        from src.todoList import create_todo_table
+        print("Comprobando la existencia de la tabla antes borrado...")
+        self.table.dynamodb = None
+        print("Comprobando la existencia de la tabla tras borrado...")
+        self.assertTrue(self.dynamodb.name)  # check if we got a result
+        print ('End: test_table_exists_error')
+    
     def test_put_todo(self):
         print ('---------------------')
         print ('Start: test_put_todo')
