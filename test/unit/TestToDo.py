@@ -67,7 +67,16 @@ class TestDatabaseFunctions(unittest.TestCase):
     def test_get_table_error_KeyError(self):
         print ('---------------------')
         print ('Start: test_get_table_error_KeyError')
+        conn = boto3.client("dynamodb", region_name="us-west-2")
         from src.todoList import get_item
+        from src.todoList import create_todo_table
+        conn.table.table_status = 'INACTIVE'
+        try:
+            conn.create_todo_table
+        except Exception:
+            print("Se ha generado la excepcion:Generica")
+            raise conn.table.AssertionError()
+
         try:
             response = get_item("")
             print(response)
