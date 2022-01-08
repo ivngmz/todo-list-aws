@@ -229,7 +229,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Response PutItem' + str(responsePut))
         idItem = json.loads(responsePut['body'])['id']
         print ('Id item: ' + idItem)
-        responseDel = print(delete_item(idItem, self.dynamodb))
+        delete_item(idItem, self.dynamodb)
         totalItems = len(get_items(self.dynamodb))
         if (totalItems == 0):
             print ('Item ' + idItem + ' deleted succesfully')
