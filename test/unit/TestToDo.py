@@ -89,7 +89,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         
         with pytest.raises(botocore.exceptions.ClientError(MSG_TEMPLATE,put_item("", self.dynamodb))) as exc_info:
             print("Imprimo Error")
-        assert exc_info.value.response['Error']['Code'].should.equal("Failed")
         
         # with self.assertRaises(botocore.exceptions.ClientError):
         #     update_item(
