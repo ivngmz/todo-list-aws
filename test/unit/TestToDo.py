@@ -251,7 +251,7 @@ class TestDatabaseFunctions(unittest.TestCase):
             with pytest.raises(botocore.exceptions.ClientError(MSG_TEMPLATE,delete_item("",self.dynamodb))) as exc_info:
                 print("Imprimo Error: " + str(exc_info))
         except AttributeError as e:
-            responseDeleteError = delete_item("",self.dynamodb)
+            responseDeleteError = delete_item("@@@@",self.dynamodb)
             print("Imprimo Error: " + str(responseDeleteError))
         print ('End: test_delete_todo_error')
     
