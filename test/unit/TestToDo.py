@@ -209,12 +209,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         'operation1:lse')
         
         try:
-            with pytest.raises(botocore.exceptions.ClientError(MSG_TEMPLATE,update_item(updated_text,self.uuid,"",self.dynamodb))) as exc_info:
-                print("Imprimo Error")
-                responseUpdate = update_item(updated_text,self.uuid,"",self.dynamodb)
-                print(responseUpdate)
+            with pytest.raises(botocore.exceptions.ClientError(MSG_TEMPLATE,update_item("@@@@",self.uuid,"",self.dynamodb))) as exc_info:
+                print("Imprimo Error: " + str(exc_info))
         except AttributeError as e:
-            responseUpdateError = update_item(updated_text,self.uuid,"",self.dynamodb)
+            responseUpdateError = update_item("@@@@",self.uuid,"",self.dynamodb)
             print("Imprimo Error: " + str(responseUpdateError))
         
         print ('End: test_update_todo_error')
@@ -247,8 +245,23 @@ class TestDatabaseFunctions(unittest.TestCase):
         'An error occurred (400) when calling the put_item '
         'operation1:lse')
         
+        self.assertRaises(
+            Exception,
+            delete_item(
+                "@@@@",
+                self.dynamodb))
+        self.assertRaises(
+            TypeError,
+            delete_item(
+                "@@@@",
+                self.dynamodb))
+        self.assertRaises(
+            Exception,
+            delete_item(
+                "@@@@",
+                self.dynamodb))
         try:
-            with pytest.raises(botocore.exceptions.ClientError(MSG_TEMPLATE,delete_item("",self.dynamodb))) as exc_info:
+            with pytest.raises(botocore.exceptions.ClientError(MSG_TEMPLATE,delete_item("@@@@",self.dynamodb))) as exc_info:
                 print("Imprimo Error: " + str(exc_info))
         except AttributeError as e:
             responseDeleteError = delete_item("@@@@",self.dynamodb)
