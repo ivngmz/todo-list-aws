@@ -54,7 +54,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Start: test_describe_missing_table_boto3')
         from src.todoList import get_table 
         with pytest.raises(ClientError) as ex:
-            self.dynamodb.resource("")
+            self.table.resource("")
             get_table(self.table.name)
         ex.value.response["Error"]["Code"].should.equal("AttributeError")
         print ('End: test_describe_missing_table_boto3')
