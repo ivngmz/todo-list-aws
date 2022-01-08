@@ -79,15 +79,12 @@ class TestDatabaseFunctions(unittest.TestCase):
         # Testing file functions
         from src.todoList import put_item
         from src.todoList import get_item
-        from src.todoList import update_item
         # Table mock
         self.assertRaises(Exception, put_item("", self.dynamodb))
         self.assertRaises(Exception, get_item("", self.dynamodb))
         
         with pytest.raises(botocore.exceptions.ValidationError) as exc_info:
-            update_item(
-                "",
-                "",
+            put_item(
                 "",
                 self.dynamodb
             )
