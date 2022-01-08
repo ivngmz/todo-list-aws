@@ -6,6 +6,7 @@ import boto3
 from moto import mock_dynamodb2
 import botocore
 import botocore.exceptions
+from botocore.exceptions import ClientError
 import sys
 import os
 import json
@@ -68,19 +69,9 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import create_todo_table
         try:
             self.table.delete()
-        except self.TestDatabaseFunctions.exceptions.ResourceNotFoundException as exc_info:
+        except ClientError as exc_info:
             print("Se genero una excepcion de tipo: ResourceNotFoundException: " + str(exc_info))
         self.assertTrue(self.table)  # check if we got a result
-        #self.assertTrue(self.table_local)  # check if we got a result
-    
-        # print('Table name:' + self.table.name)
-        # tableName = os.environ['DYNAMODB_TABLE'];
-        # # check if the table name is 'ToDo'
-        # self.assertIn(tableName, self.table.name)
-        # self.assertRaises(Exception, get_item("", self.dynamodb))
-        # self.tearDown
-        # self.assertRaises(AssertionError, create_todo_table(dynamodb2(dynamodb)))
-        # #self.assertIn('todoTable', self.table_local.name)
         print ('End: test_table_exists_error')
 
     def test_get_table_error_KeyError(self):
