@@ -68,12 +68,9 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Start: test_table_exists_error')
         from src.todoList import get_item
         from src.todoList import create_todo_table
-        try:
-            self.table.delete()
-            self.dynamodb = None
-        except Exception as exc_info:
-            print("Se genero una excepcion de tipo: ResourceNotFoundException: " + str(exc_info))
-        self.assertTrue(self.table)  # check if we got a result
+        self.dynamodb = None
+        print("Comprobando la existencia de la tabla tras borrado...")
+        print("Existe: " + str(self.assertTrue(self.table)))  # check if we got a result
         print ('End: test_table_exists_error')
 
     def test_get_table_error_KeyError(self):
