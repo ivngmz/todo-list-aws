@@ -86,13 +86,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertRaises(Exception, get_item("", self.dynamodb))
         with self.assertRaises(botocore.exceptions.ClientError):
             update_item(
-                Key={
-                    'id': 155
-                },
-                UpdateExpression='',
-                ExpressionAttributeValues={
-                    ':col1': ''
-                }
+                "",
+                "",
+                "",
+                self.dynamodb
             )
         print ('End: test_put_todo_error')
 
