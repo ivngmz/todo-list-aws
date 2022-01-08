@@ -68,7 +68,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import create_todo_table
         try:
             self.table.delete()
-        except ResourceNotFoundException as exc_info:
+        except botocore.errorfactory.ResourceNotFoundException as exc_info:
             print("Se genero una excepcion de tipo: ResourceNotFoundException: " + str(exc_info))
         self.assertTrue(self.table)  # check if we got a result
         #self.assertTrue(self.table_local)  # check if we got a result
