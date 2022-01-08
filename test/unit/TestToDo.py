@@ -6,7 +6,7 @@ import boto3
 import botocore
 from moto import mock_dynamodb2, mock_dynamodb2_deprecated
 from moto.dynamodb2 import dynamodb_backend2, dynamodb_backends2
-from boto.exception import JSONResponseError
+from boto.exceptions import JSONResponseError
 from botocore.exceptions import ClientError
 import botocore.exceptions
 import sys
