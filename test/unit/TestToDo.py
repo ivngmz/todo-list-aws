@@ -65,7 +65,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Start: test_table_exists_error')
         from src.todoList import get_item
         from src.todoList import create_todo_table
-        self.tearDown
+        self.table.delete()
         self.assertTrue(self.table)  # check if we got a result
         #self.assertTrue(self.table_local)  # check if we got a result
     
