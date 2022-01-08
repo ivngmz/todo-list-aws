@@ -84,13 +84,22 @@ class TestDatabaseFunctions(unittest.TestCase):
         # Table mock
         self.assertRaises(Exception, put_item("", self.dynamodb))
         self.assertRaises(Exception, get_item("", self.dynamodb))
-        with self.assertRaises(botocore.exceptions.ClientError):
+        
+        with pytest.raises(ClientError) as exc_info:
             update_item(
                 "",
                 "",
                 "",
                 self.dynamodb
             )
+        assert exc_info.value.response['Error']['Code'] == "Error"
+        # with self.assertRaises(botocore.exceptions.ClientError):
+        #     update_item(
+        #         "",
+        #         "",
+        #         "",
+        #         self.dynamodb
+        #     )
         print ('End: test_put_todo_error')
 
     def test_get_todo(self):
