@@ -153,7 +153,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         try:
             get_item("Esto no existe",self.dynamodb)
         except self.table.dynamodb.ClientError as error:
-            print("Se ha levantado la excepcion: "  + str(exc_info.ClientError)")
+            print("Se ha levantado la excepcion: "  + str(exc_info.ClientError))
         print ('End: test_get_todo_error_ClientError')
     
     def test_list_todo(self):
