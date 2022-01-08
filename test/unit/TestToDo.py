@@ -85,15 +85,15 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertRaises(Exception, put_item("", self.dynamodb))
         self.assertRaises(Exception, get_item("", self.dynamodb))
         
-        with pytest.raises(ClientError) as exc_info:
+        with pytest.raises(botocore.exceptions.ClientError) as exc_info:
             update_item(
                 "",
                 "",
                 "",
                 self.dynamodb
             )
-            raise
         assert exc_info.value.response['Error']['Code'] == "Error"
+        
         # with self.assertRaises(botocore.exceptions.ClientError):
         #     update_item(
         #         "",
