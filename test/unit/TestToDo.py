@@ -74,6 +74,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         # check if the table name is 'ToDo'
         self.assertIn(tableName, self.table.name)
         self.assertRaises(Exception, get_item("", self.dynamodb))
+        self.tearDown
         self.assertRaises(AssertionError, create_todo_table(self.dynamodb))
         #self.assertIn('todoTable', self.table_local.name)
         print ('End: test_table_exists_error')
