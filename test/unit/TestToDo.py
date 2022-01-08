@@ -119,8 +119,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         'An error occurred (400) when calling the put_item '
         'operation1:lse')
         try:
-            with pytest.raises(botocore.exceptions.ClientError(MSG_TEMPLATE,put_item("", self.dynamodb))) as exc_info:
-                print("Imprimo Error")
+            with pytest.raises(self.table.dynamodb.ClientError(MSG_TEMPLATE,put_item("", self.dynamodb))) as exc_info:
+                print("Imprimo Error: " + str(exc_info.ClientError))
         except AttributeError as e:
             print("Imprimo Error")
 
@@ -152,8 +152,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import get_item
         try:
             get_item("Esto no existe",self.dynamodb)
-        except botocore.exceptions.ClientError as error:
-            print("Se ha levantado la excepcion:ClientError")
+        except self.table.dynamodb.ClientError as error:
+            print("Se ha levantado la excepcion: "  + str(exc_info.ClientError)")
         print ('End: test_get_todo_error_ClientError')
     
     def test_list_todo(self):
@@ -230,8 +230,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         'operation1:lse')
         
         try:
-            with pytest.raises(botocore.exceptions.ClientError(MSG_TEMPLATE,update_item("@@@@","","",self.dynamodb))) as exc_info:
-                print("Imprimo Error: " + str(exc_info))
+            with pytest.raises(self.table.dynamodb.ClientError(MSG_TEMPLATE,update_item("@@@@","","",self.dynamodb))) as exc_info:
+                print("Imprimo Error: " + str(exc_info.ClientError))
         except AttributeError as e:
             responseUpdateError = update_item("@@@@","","",self.dynamodb)
             print("Imprimo Error: " + str(responseUpdateError))
@@ -289,8 +289,8 @@ class TestDatabaseFunctions(unittest.TestCase):
                 "@@@@",
                 self.dynamodb))
         try:
-            with pytest.raises(botocore.exceptions.ClientError(MSG_TEMPLATE,delete_item("@@@@",self.dynamodb))) as exc_info:
-                print("Imprimo Error: " + str(exc_info))
+            with pytest.raises(self.table.dynamodb.ClientError(MSG_TEMPLATE,delete_item("@@@@",self.dynamodb))) as exc_info:
+                print("Imprimo Error: " + str(exc_info.ClientError))
         except AttributeError as exc_info:
             responseDeleteError = delete_item("@@@@",self.dynamodb)
             print("Imprimo Error: " + str(exc_info))
