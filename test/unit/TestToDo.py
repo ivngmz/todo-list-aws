@@ -52,8 +52,9 @@ class TestDatabaseFunctions(unittest.TestCase):
 
     def test_describe_missing_table_boto3(self):
         print ('Start: test_describe_missing_table_boto3')
-        with pytest.raises(self.dynamodb.ClientError) as ex:
-            self.table.dynamodb.describe_table(TableName="messages")
+        conn = boto3.client('dynamodb', region_name='us-east-1')
+        with pytest.raises(ClientError) as ex:
+            print(self.table.dynamodb.TableName)
         ex.value.response["Error"]["Code"].should.equal("ResourceNotFoundException")
         print ('End: test_describe_missing_table_boto3')
     
