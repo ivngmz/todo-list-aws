@@ -83,7 +83,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertRaises(Exception, put_item("", self.dynamodb))
         self.assertRaises(Exception, get_item("", self.dynamodb))
         
-        with pytest.raises(botocore.exceptions.ClientError("failed", put_item)) as exc_info:
+        with pytest.raises(botocore.exceptions.ClientError("failed",put_item)) as exc_info:
             put_item(
                 "",
                 self.dynamodb
