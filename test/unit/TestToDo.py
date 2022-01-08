@@ -86,10 +86,11 @@ class TestDatabaseFunctions(unittest.TestCase):
         MSG_TEMPLATE = (
         'An error occurred (400) when calling the put_item '
         'operation1:lse')
-        
-        with pytest.raises(botocore.exceptions.ClientError(MSG_TEMPLATE,put_item("", self.dynamodb))) as exc_info:
+        try:
+            with pytest.raises(botocore.exceptions.ClientError(MSG_TEMPLATE,put_item("", self.dynamodb))) as exc_info:
+                print("Imprimo Error")
+        except botocore.exceptions.ClientError as e:
             print("Imprimo Error")
-        
         # with self.assertRaises(botocore.exceptions.ClientError):
         #     update_item(
         #         "",
