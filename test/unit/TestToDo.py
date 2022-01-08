@@ -256,7 +256,14 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('---------------------')
         print ('Start: test_delete_todo_error')
         from src.todoList import delete_item
+        from src.todoList import put_item
         # Testing file functions
+        responsePut = put_item(self.text, self.dynamodb)
+        idItem = json.loads(responsePut['body'])['id']
+        print ('Id item:' + idItem)
+        delete_item(idItem, self.dynamodb)
+        delete_item(idItem, self.dynamodb)
+        
         self.assertRaises(TypeError, delete_item("", self.dynamodb))
         
         MSG_TEMPLATE = (
