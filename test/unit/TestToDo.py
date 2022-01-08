@@ -5,7 +5,6 @@ import pytest
 import boto3
 from moto import mock_dynamodb2
 import botocore
-from botocore.exceptions import ClientError
 import sys
 import os
 import json
@@ -92,7 +91,7 @@ class TestDatabaseFunctions(unittest.TestCase):
                 "",
                 self.dynamodb
             )
-        assert exc_info.value.response['Error']['Code'] == "Failed"
+        assert exc_info.value.response['Error']['Code'].should.equal("Failed")
         
         # with self.assertRaises(botocore.exceptions.ClientError):
         #     update_item(
@@ -214,6 +213,14 @@ class TestDatabaseFunctions(unittest.TestCase):
                 self.uuid,
                 "",
                 self.dynamodb))
+        with pytest.raises(botocore.exceptions.ValidationError) as exc_info:
+            update_item(
+                "",
+                "",
+                "",
+                self.dynamodb
+            )
+        assert exc_info.value.response['Error']['Code'].should.equal("Failed")
         
         print ('End: atest_update_todo_error')
 
