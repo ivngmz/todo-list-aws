@@ -83,7 +83,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertRaises(Exception, put_item("", self.dynamodb))
         self.assertRaises(Exception, get_item("", self.dynamodb))
         
-        with pytest.raises(botocore.exceptions.ClientError({'Error': {'Code': 'ResourceNotFoundException', 'Message': 'Not Found'}},"DescribeTable")) as exc_info:
+        with pytest.raises(botocore.exceptions.ClientError({'Error': {'Code': 'ResourceNotFoundException', 'Message': 'Not Found'}})) as exc_info:
             put_item(
                 "",
                 self.dynamodb
@@ -210,7 +210,7 @@ class TestDatabaseFunctions(unittest.TestCase):
                 self.uuid,
                 "",
                 self.dynamodb))
-        with pytest.raises(botocore.exceptions.ClientError({'Error': {'Code': 'ResourceNotFoundException', 'Message': 'Not Found'}},"DescribeTable")) as exc_info:
+        with pytest.raises(botocore.exceptions.ClientError(ValueError)) as exc_info:
             update_item(
                 "",
                 "",
