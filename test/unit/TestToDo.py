@@ -5,6 +5,7 @@ import pytest
 import boto3
 from moto import mock_dynamodb2
 import botocore
+import botocore.exceptions
 import sys
 import os
 import json
@@ -67,7 +68,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import create_todo_table
         try:
             self.table.delete()
-        except botocore.errorfactory.ResourceNotFoundException as exc_info:
+        except ResourceNotFoundException as exc_info:
             print("Se genero una excepcion de tipo: ResourceNotFoundException: " + str(exc_info))
         self.assertTrue(self.table)  # check if we got a result
         #self.assertTrue(self.table_local)  # check if we got a result
