@@ -74,7 +74,7 @@ class TestDatabaseFunctions(unittest.TestCase):
             print (response)
         except KeyError:
             print("Se ha generado la excepcion:KeyError")
-        with pytest.raises(conn.get_item.ClientError) as exc_info:
+        with pytest.raises(conn.get_item("").ClientError) as exc_info:
             print ("Levantada excepcion")
         print ('End: test_get_table_error_KeyError')        
 
