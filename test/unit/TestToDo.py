@@ -204,15 +204,6 @@ class TestDatabaseFunctions(unittest.TestCase):
                 "",
                 self.dynamodb))
         
-        with pytest.raises(botocore.exceptions.ClientError("failed","update_item")) as exc_info:
-            update_item(
-                "",
-                "",
-                "",
-                self.dynamodb
-            )
-        assert exc_info.value.response['Error']['Code'].should.equal("Failed")
-        
         MSG_TEMPLATE = (
         'An error occurred (400) when calling the put_item '
         'operation1:lse')
