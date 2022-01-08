@@ -52,9 +52,10 @@ class TestDatabaseFunctions(unittest.TestCase):
 
     def test_describe_missing_table_boto3(self):
         print ('Start: test_describe_missing_table_boto3')
-        with pytest.raises(self.dynamodb.ClientError) as exc_info:
+        conn = boto3.client('dynamodb', region_name='us-east-1')
+        with pytest.raises(ClientError) as exc_info:
             error_code = exc_info.response['Error']['Code']
-            print(error_code)
+            print("Levantada excepcion: " + str(error_code))
         exc_info.value.response["Error"]["Code"].should.equal("AttributeError")
         print ('End: test_describe_missing_table_boto3')
     
@@ -72,6 +73,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('End: test_table_exists')
 
     def test_table_exists_error(self):
+        conn = boto3.client('dynamodb', region_name='us-east-1')
         print ('---------------------')
         print ('Start: test_table_exists_error')
         from src.todoList import get_item
@@ -108,6 +110,7 @@ class TestDatabaseFunctions(unittest.TestCase):
     def test_put_todo_error(self):
         print ('---------------------')
         print ('Start: test_put_todo_error')
+        conn = boto3.client('dynamodb', region_name='us-east-1')
         # Testing file functions
         from src.todoList import put_item
         from src.todoList import get_item
@@ -128,6 +131,7 @@ class TestDatabaseFunctions(unittest.TestCase):
     def test_get_todo(self):
         print ('---------------------')
         print ('Start: test_get_todo')
+        conn = boto3.client('dynamodb', region_name='us-east-1')
         from src.todoList import get_item
         from src.todoList import put_item
 
@@ -150,6 +154,7 @@ class TestDatabaseFunctions(unittest.TestCase):
     def test_get_todo_error_ClientError(self):
         print ('---------------------')
         print ('Start: test_get_todo_error_ClientError')
+        conn = boto3.client('dynamodb', region_name='us-east-1')
         from src.todoList import get_item
         try:
             get_item("Esto no existe",self.dynamodb)
@@ -198,6 +203,7 @@ class TestDatabaseFunctions(unittest.TestCase):
     def test_update_todo_error(self):
         print ('---------------------')
         print ('Start: test_update_todo_error')
+        conn = boto3.client('dynamodb', region_name='us-east-1')
         from src.todoList import put_item
         from src.todoList import update_item
         updated_text = "Aprender más cosas que DevOps y Cloud en la UNIR"
@@ -261,6 +267,7 @@ class TestDatabaseFunctions(unittest.TestCase):
     def test_delete_todo_error(self):
         print ('---------------------')
         print ('Start: test_delete_todo_error')
+        conn = boto3.client('dynamodb', region_name='us-east-1')
         from src.todoList import delete_item
         from src.todoList import put_item
         # Testing file functions
