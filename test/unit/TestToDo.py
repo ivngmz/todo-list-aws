@@ -3,14 +3,19 @@ import warnings
 import unittest
 import pytest
 import boto3
-from moto import mock_dynamodb2
 import botocore
-import botocore.exceptions
+from moto import mock_dynamodb2, mock_dynamodb2_deprecated
+from moto.dynamodb2 import dynamodb_backend2, dynamodb_backends2
+from boto.exception import JSONResponseError
 from botocore.exceptions import ClientError
+import botocore.exceptions
 import sys
 import os
 import json
+from botocore.utils import get_service_module_name
+from botocore.utils import errorfactory
 
+@mock_dynamodb2_deprecated
 @mock_dynamodb2
 class TestDatabaseFunctions(unittest.TestCase):
     def setUp(self):
@@ -68,7 +73,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import get_item
         from src.todoList import create_todo_table
         try:
-            self.tearDown
+            self.table.delete()
+            self.dynamodb = None
         except Exception as exc_info:
             print("Se genero una excepcion de tipo: ResourceNotFoundException: " + str(exc_info))
         self.assertTrue(self.table)  # check if we got a result
