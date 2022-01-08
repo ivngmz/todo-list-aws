@@ -92,6 +92,7 @@ class TestDatabaseFunctions(unittest.TestCase):
                 "",
                 self.dynamodb
             )
+            raise
         assert exc_info.value.response['Error']['Code'] == "Error"
         # with self.assertRaises(botocore.exceptions.ClientError):
         #     update_item(
