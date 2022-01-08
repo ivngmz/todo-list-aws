@@ -211,6 +211,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         try:
             with pytest.raises(botocore.exceptions.ClientError(MSG_TEMPLATE,update_item(updated_text,self.uuid,"",self.dynamodb))) as exc_info:
                 print("Imprimo Error")
+                responseUpdate = update_item(updated_text,self.uuid,"",self.dynamodb)
+                print(responseUpdate)
         except AttributeError as e:
             print("Imprimo Error")
         
