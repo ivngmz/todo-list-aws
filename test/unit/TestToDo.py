@@ -63,16 +63,18 @@ class TestDatabaseFunctions(unittest.TestCase):
     def test_table_exists_error(self):
         print ('---------------------')
         print ('Start: test_table_exists_error')
+        from src.todoList import get_item
+        from src.todoList import create_todo_table
         self.table.table_status != 'INACTIVE'
         self.assertTrue(self.table)  # check if we got a result
         #self.assertTrue(self.table_local)  # check if we got a result
 
         print('Table name:' + self.table.name)
-        tableName = os.environ['DYNAMODB_TABLE2'];
+        tableName = os.environ['DYNAMODB_TABLE'];
         # check if the table name is 'ToDo'
         self.assertIn(tableName, self.table.name)
-        self.assertTrue(self.table.table_status != 'ACTIVE')
         self.assertRaises(Exception, get_item("", self.dynamodb))
+        self.assertRaises(AssertionError, create_todo_table(self.dynamodb))
         #self.assertIn('todoTable', self.table_local.name)
         print ('End: test_table_exists_error')
 
