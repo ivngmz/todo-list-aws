@@ -214,11 +214,10 @@ class TestDatabaseFunctions(unittest.TestCase):
                 responseUpdate = update_item(updated_text,self.uuid,"",self.dynamodb)
                 print(responseUpdate)
         except AttributeError as e:
-            print("Imprimo Error")
-            responseUpdate = update_item(updated_text,self.uuid,"",self.dynamodb)
-            print(responseUpdate)
+            responseUpdateError = update_item(updated_text,self.uuid,"",self.dynamodb)
+            print("Imprimo Error: " + responseUpdateError)
         
-        print ('End: atest_update_todo_error')
+        print ('End: test_update_todo_error')
 
     def test_delete_todo(self):
         print ('---------------------')
