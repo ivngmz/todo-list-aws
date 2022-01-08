@@ -93,12 +93,15 @@ class TestDatabaseFunctions(unittest.TestCase):
     def test_put_todo_error(self):
         print ('---------------------')
         print ('Start: test_put_todo_error')
+        conn = boto3.client('dynamodb', region_name='us-east-1')
         # Testing file functions
         from src.todoList import put_item
         from src.todoList import get_item
         # Table mock
         self.assertRaises(Exception, put_item("", self.dynamodb))
         self.assertRaises(Exception, get_item("", self.dynamodb))
+        self.assertRaises(conn.ClientError, put_item("", self.dynamodb))
+        self.assertRaises(conn.ClientError, get_item("", self.dynamodb))
 
         MSG_TEMPLATE = (
         'An error occurred (400) when calling the put_item '
