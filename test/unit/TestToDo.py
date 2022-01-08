@@ -83,6 +83,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertRaises(Exception, put_item("", self.dynamodb))
         self.assertRaises(Exception, get_item("", self.dynamodb))
         
+        MSG_TEMPLATE = (
+        'An error occurred (400) when calling the put_item '
+        'operation1:False')
+        
         with pytest.raises(botocore.exceptions.ClientError("failed",put_item("", self.dynamodb))) as exc_info:
             print("Imprimo Error")
         assert exc_info.value.response['Error']['Code'].should.equal("Failed")
