@@ -271,14 +271,13 @@ class TestDatabaseFunctions(unittest.TestCase):
             delete_item(
                 "@@@@",
                 self.dynamodb))
-        try:
-            with pytest.raises(self.dynamodb.ClientError(MSG_TEMPLATE,delete_item("@@@@",self.dynamodb))) as exc_info:
-                error_code = exc_info.response['Error']['Code']
-                print(error_code)
-        except AttributeError as exc_info:
-            responseDeleteError = delete_item("@@@@",self.dynamodb)
-            print("Imprimo Error: " + str(exc_info))
-        print ('End: test_delete_todo_error')
+        
+        
+        self.assertRaises(
+            ClientError,
+            delete_item(
+                "@@@@",
+                self.dynamodb))
     
 
 if __name__ == '__main__':
