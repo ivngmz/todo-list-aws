@@ -50,17 +50,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.dynamodb = None
         print ('End: tearDown')
 
-    def test_describe_missing_table_boto3(self):
-        print ('Start: test_describe_missing_table_boto3')
-        conn = boto3.client('dynamodb', region_name='us-east-1')
-        with pytest.raises(ClientError) as exc_info:
-            conn.describe_table(TableName="messages")
-            print(exc_info.value.response["Error"]["Code"])
-        print ('End: test_describe_missing_table_boto3')
-    
     def test_table_exists(self):
         print ('---------------------')
         print ('Start: test_table_exists')
+        conn = boto3.client('dynamodb', region_name='us-east-1')
         self.assertTrue(self.table)  # check if we got a result
         #self.assertTrue(self.table_local)  # check if we got a result
         
@@ -70,17 +63,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertIn(tableName, self.table.name)
         #self.assertIn('todoTable', self.table_local.name)
         print ('End: test_table_exists')
-
-    def test_table_exists_error(self):
-        print ('---------------------')
-        print ('Start: test_table_exists_error')
-        from src.todoList import get_item
-        from src.todoList import create_todo_table
-        print("Comprobando la existencia de la tabla antes borrado...")
-        self.table.dynamodb = None
-        print("Comprobando la existencia de la tabla tras borrado...")
-        self.assertTrue(self.table.dynamodb.name)  # check if we got a result
-        print ('End: test_table_exists_error')
 
     def test_get_table_error_KeyError(self):
         print ('---------------------')
