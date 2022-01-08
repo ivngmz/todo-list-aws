@@ -50,12 +50,20 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.dynamodb = None
         print ('End: tearDown')
 
+    def test_describe_missing_table_boto3(self):
+        conn = boto3.client("dynamodb", region_name="us-east-1")
+        with pytest.raises(ClientError) as ex:
+            self.dynamodb.describe_table(TableName="dynamodb")
+        ex.value.response["Error"]["Code"].should.equal("ResourceNotFoundException")
+        ex.value.response["ResponseMetadata"]["HTTPStatusCode"].should.equal(400)
+        ex.value.response["Error"]["Message"].should.equal("Requested resource not found")
+    
     def test_table_exists(self):
         print ('---------------------')
         print ('Start: test_table_exists')
         self.assertTrue(self.table)  # check if we got a result
         #self.assertTrue(self.table_local)  # check if we got a result
-
+        
         print('Table name:' + self.table.name)
         tableName = os.environ['DYNAMODB_TABLE'];
         # check if the table name is 'ToDo'
