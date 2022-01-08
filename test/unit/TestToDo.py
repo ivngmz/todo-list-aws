@@ -242,6 +242,17 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import delete_item
         # Testing file functions
         self.assertRaises(TypeError, delete_item("", self.dynamodb))
+        
+        MSG_TEMPLATE = (
+        'An error occurred (400) when calling the put_item '
+        'operation1:lse')
+        
+        try:
+            with pytest.raises(botocore.exceptions.ClientError(MSG_TEMPLATE,delete_item("",self.dynamodb))) as exc_info:
+                print("Imprimo Error: " + str(exc_info))
+        except AttributeError as e:
+            responseDeleteError = delete_item("",self.dynamodb)
+            print("Imprimo Error: " + str(responseDeleteError))
         print ('End: test_delete_todo_error')
     
 
