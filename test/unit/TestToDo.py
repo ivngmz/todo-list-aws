@@ -70,7 +70,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import create_todo_table
         self.dynamodb = None
         print("Comprobando la existencia de la tabla tras borrado...")
-        print("Existe: " + str(self.assertTrue(self.table)))  # check if we got a result
+        print("Existe: " + str(self.assertTrue(self.table.name)))  # check if we got a result
         print ('End: test_table_exists_error')
 
     def test_get_table_error_KeyError(self):
