@@ -128,7 +128,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         
         exc_info = None # vacío objeto excepcion
         
-        with pytest.raises(self.dynamodb.put_item.ClientError) as exc_info:
+        with pytest.raises(ClientError) as exc_info:
             put_item(None,self.dynamodb)
             
         print ("Registro de salida segunda excepcion checkeada: " + str(exc_info) )
