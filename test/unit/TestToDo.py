@@ -92,7 +92,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Start: test_put_todo_error')
         # Testing file functions
         from src.todoList import put_item
-        from src.todoList import get_item
+        from src.todoList import get_table
         
         # Table mock
         name = "TestTable"
@@ -108,7 +108,9 @@ class TestDatabaseFunctions(unittest.TestCase):
             AttributeDefinitions=[{"AttributeName": "forum_name", "AttributeType": "S"}],
             ProvisionedThroughput={"ReadCapacityUnits": 5, "WriteCapacityUnits": 5},
             )
-
+        
+        print(str(get_table(name)))
+        
         with pytest.raises(ClientError) as exc_info:
             conn.put_item(
                 TableName=name,
@@ -127,14 +129,16 @@ class TestDatabaseFunctions(unittest.TestCase):
         #     "One or more parameter values were invalid: An AttributeValue may not contain an empty string"
         # )
 
-        
+        # intento grabar dato nulo
         try:
             response = put_item(None,self.dynamodb)
         
         except ClientError as exc_info:
             print("Error error")
+        
         if (response != None):
             print ("Respuesta a put: " + str(response))
+        
         else:
             print("Registro de salida segunda excepcion checkeada: " + str(exc_info) )
         
