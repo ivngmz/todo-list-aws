@@ -167,7 +167,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         exc_info = None # empty the exception object
         
         try:
-            get_item("",self.conn)
+            print(get_item("",self.conn))
         # except conn.exceptions.ClientError as exc_info:
         #     print(str(exc_info))
         except AttributeError as exc_info:
@@ -242,7 +242,7 @@ class TestDatabaseFunctions(unittest.TestCase):
 
         # Testing file functions
         # Table mock
-        put_item(self.text, self.dynamodb)
+        self.table.put_item(self.text, self.dynamodb)
         result = get_items(self.dynamodb)
         print ('Response GetItems' + str(result))
         self.assertTrue(len(result) == 1)
