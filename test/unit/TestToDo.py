@@ -168,8 +168,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         
         try:
             get_item("",self.conn)
-        except conn.ClientError as exc_info:
-            print(str(exc_info))
+        # except conn.exceptions.ClientError as exc_info:
+        #     print(str(exc_info))
         except AttributeError as exc_info:
             print(str(exc_info))
         
