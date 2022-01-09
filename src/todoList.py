@@ -16,7 +16,7 @@ def get_table(dynamodb=None):
     if not dynamodb:
         if URL:
             boto3.client = functools.partial(boto3.client, endpoint_url=URL)
-            boto3.resource = functools.partial(boto3.resource, 
+            boto3.resource = functools.partial(boto3.resource,
                                                endpoint_url=URL)
         dynamodb = boto3.resource("dynamodb")
     # fetch todo from the database
