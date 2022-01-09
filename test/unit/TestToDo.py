@@ -129,12 +129,14 @@ class TestDatabaseFunctions(unittest.TestCase):
 
         
         try:
-            put_item(None,self.dynamodb)
+            response = put_item(None,self.dynamodb)
         
         except ClientError as exc_info:
             print("Error error")
-            
-        print("Registro de salida primera excepcion checkeada: " + str(exc_info) )
+        if (response != None):
+            print ("Respuesta a put: " + str(response)
+        else:
+            print("Registro de salida segunda excepcion checkeada: " + str(exc_info) )
         
         # exc_info.value.response["Error"]["Code"] == 'ValidationException'
         # exc_info.value.response["ResponseMetadata"]["HTTPStatusCode"].should.equal(400)
