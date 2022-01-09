@@ -46,10 +46,11 @@ class TestDatabaseFunctions(unittest.TestCase):
         """Delete mock database and table after test is run"""
         try:
             self.table.delete()
+            print ("Table is been deleted...")
         except botocore.Exception as exc_info:
-            print ("La tabla no existe")
+            print ("Table does not exists")
         except AttributeError as exc_info:
-            print ("Se ha producido una excepcion: " + str(exc_info))
+            print ("Exception: " + str(exc_info))
         print ('Table deleted succesfully')
         #self.table_local.delete()
         self.dynamodb = None
@@ -74,10 +75,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Start: test_table_no_exists')
         #delete dynamodb
         try:
-            print("Borrando tabla... " + str(self.table.delete( TableName = 'todoUnitTestsTable' )))
+            print("Deleting table... " + str(self.table.delete( TableName = 'todoUnitTestsTable' )))
             self.dynamodb = None
         except KeyError as exc_info:
-            print("No funcionó el borrado de la tabla mock")
+            print("Fail to delete mock table")
         #run function from todoList.py
         from src.todoList import get_table
         print(self.dynamodb)
@@ -86,7 +87,7 @@ class TestDatabaseFunctions(unittest.TestCase):
             result = get_table(self.table)
             print(result)
         except AttributeError as exc_info:
-            print ("Se ha producido una excepcion: " + str(exc_info))
+            print ("Exception happened: " + str(exc_info))
         
         # Creo de nuevo la tabla   
         self.dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
@@ -108,7 +109,7 @@ class TestDatabaseFunctions(unittest.TestCase):
             print (response)
         
         except KeyError:
-            print("Se ha generado la excepcion:KeyError")
+            print("An exception was generated and catched: KeyError")
 
     def test_put_todo(self):
         print ('---------------------')
@@ -129,6 +130,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import put_item
         from src.todoList import create_todo_table
         from src.todoList import get_table
+        from src.todoList import get_item
         
         # Table mock
         name = "TestTable"
@@ -145,6 +147,7 @@ class TestDatabaseFunctions(unittest.TestCase):
             ProvisionedThroughput={"ReadCapacityUnits": 5, "WriteCapacityUnits": 5},
             )
         
+        # Forcing exception in mock
 
         with pytest.raises(ClientError) as exc_info:
             conn.put_item(
@@ -158,10 +161,17 @@ class TestDatabaseFunctions(unittest.TestCase):
                 },
             )
             
-        print ("Registro de salida primera excepcion checkeada: " + str(exc_info) )
+        print ("An exception was raised on TestTable: " + str(exc_info) )
         exc_info.value.response["Error"]["Code"] == 'ValidationException'
         
-        exc_info = None # vacío objeto excepcion
+        exc_info = None # empty the exception object
+        
+        try:
+            get_item("",dynamodb=name)
+        except ClientError as exc_info:
+            print(str(exc_info))
+        
+        exc_info = None # empty the exception object
         
         MSG_TEMPLATE = (
         'An error occurred (400) when calling the put_item '
@@ -169,30 +179,24 @@ class TestDatabaseFunctions(unittest.TestCase):
         
         try:
             with pytest.raises(self.table.dynamodb.ClientError(MSG_TEMPLATE,put_item(None,""))) as exc_info:
-                print("Imprimo Error: " + str(exc_info))
+                print("An exception was raised on --todoUnitTestsTable-- testing instance: " + str(exc_info))
         except AttributeError as exc_info:
-            print("Imprimo Error: " + str(exc_info))
+            print("Take a look at the raised exception: " + str(exc_info))
             
-        # with pytest.raises(ClientError) as exc_info:
-        #     put_item(None,self.dynamodb)
-            
-        # print ("Registro de salida segunda excepcion checkeada: " + str(exc_info) )
-        # exc_info.value.response["Error"]["Code"] == 'ValidationException'
+        exc_info = None # empty the exception object
         
-        exc_info = None # vacío objeto excepcion
-        
-        print ("Intento grabar dato nulo en instancia --todoUnitTestsTable--... ")
+        print ("Trying to delete None value in --todoUnitTestsTable--... ")
         try:
             response = put_item(None,self.dynamodb)
         
         except ClientError as exc_info:
-            print("Excepcion generada: " + str(exc_info))
+            print("Exception generated: " + str(exc_info))
         
         if (response != None):
-            print ("Respuesta a put: " + str(response))
+            print ("Response to put: " + str(response))
         
         else:
-            print("Registro de salida segunda excepcion checkeada: " + str(exc_info) )
+            print("Exception output when try to delete None value in --todoUnitTestsTable--: " + str(exc_info) )
         
         print ('End: test_put_todo_error')
 
