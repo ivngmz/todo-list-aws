@@ -108,11 +108,7 @@ class TestDatabaseFunctions(unittest.TestCase):
             AttributeDefinitions=[{"AttributeName": "forum_name", "AttributeType": "S"}],
             ProvisionedThroughput={"ReadCapacityUnits": 5, "WriteCapacityUnits": 5},
             )
-        print ("Prueba inicial grabar cadena vacía")
-        self.assertRaises(ClientError, put_item("", self.dynamodb))
-        self.assertRaises(ClientError, get_item("", self.dynamodb))
-        
-        
+
         with pytest.raises(ClientError) as ex:
             conn.put_item(
                 TableName=name,
