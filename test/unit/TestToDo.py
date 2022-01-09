@@ -93,6 +93,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         # Testing file functions
         from src.todoList import put_item
         from src.todoList import create_todo_table
+        from src.todoList import get_table
         
         # Table mock
         name = "TestTable"
@@ -110,7 +111,8 @@ class TestDatabaseFunctions(unittest.TestCase):
             )
         
         
-        print(str(create_todo_table(name)))
+        create_todo_table(name)
+        print(get_table(name))
         
         with pytest.raises(ClientError) as exc_info:
             conn.put_item(
