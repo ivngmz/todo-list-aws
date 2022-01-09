@@ -96,7 +96,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import get_item
         # Table mock
         self.assertRaises(Exception, put_item("", self.dynamodb))
-        self.assertRaises(Exception, get_item("", self.dynamodb))
+        try:
+            self.assertRaises(Exception, get_item(, self.dynamodb))
+        except Excepcion as exc_info:
+            print ("Problemas: " + str(exc_info))
 
         MSG_TEMPLATE = (
         'An error occurred (400) when calling the put_item '
