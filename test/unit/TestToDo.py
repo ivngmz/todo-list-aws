@@ -90,17 +90,45 @@ class TestDatabaseFunctions(unittest.TestCase):
     def test_put_todo_error(self):
         print ('---------------------')
         print ('Start: test_put_todo_error')
-        conn = boto3.client('dynamodb', region_name='us-east-1')
         # Testing file functions
         from src.todoList import put_item
         from src.todoList import get_item
+        
         # Table mock
-        self.assertRaises(Exception, put_item("", self.dynamodb))
-        try:
-            self.assertRaises(Exception, get_item(, self.dynamodb))
-        except Excepcion as exc_info:
-            print ("Problemas: " + str(exc_info))
+        name = "TestTable"
+        conn = boto3.client(
+            "dynamodb",
+            region_name="us-west-2",
+            aws_access_key_id="ak",
+            aws_secret_access_key="sk",
+            )
+        conn.create_table(
+            TableName=name,
+            KeySchema=[{"AttributeName": "forum_name", "KeyType": "HASH"}],
+            AttributeDefinitions=[{"AttributeName": "forum_name", "AttributeType": "S"}],
+            ProvisionedThroughput={"ReadCapacityUnits": 5, "WriteCapacityUnits": 5},
+            )
+        print ("Prueba inicial grabar cadena vacía")
+        self.assertRaises(ClientError, put_item("", self.dynamodb))
+        self.assertRaises(ClientError, get_item("", self.dynamodb))
+        
+        
+        with pytest.raises(ClientError) as ex:
+            conn.put_item(
+                TableName=name,
+                Item={
+                    "forum_name": {"S": ""},
+                    "subject": {"S": "Check this out!"},
+                    "Body": {"S": "http://url_to_lolcat.gif"},
+                    "SentBy": {"S": "someone@somewhere.edu"},
+                    "ReceivedTime": {"S": "12/9/2011 11:36:03 PM"},
+                },
+            )
 
+        ex.value.response["Error"]["Code"].should.equal("ValidationException")
+        ex.value.response["ResponseMetadata"]["HTTPStatusCode"].should.equal(400)
+        ex.value.response["Error"]["Message"].should.equal(
+            "One or more parameter values were invalid: An AttributeValue may not contain an empty string"
         MSG_TEMPLATE = (
         'An error occurred (400) when calling the put_item '
         'operation1:lse')
