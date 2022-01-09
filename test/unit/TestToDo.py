@@ -120,7 +120,7 @@ class TestDatabaseFunctions(unittest.TestCase):
                     "ReceivedTime": {"S": "12/9/2011 11:36:03 PM"},
                 },
             )
-        print ("Registro de salida primera excepcion: " + str(exc_info) )
+        print ("Registro de salida primera excepcion checkeada: " + str(exc_info) )
         exc_info.value.response["Error"]["Code"] == 'ValidationException'
         # exc_info.value.response["ResponseMetadata"]["HTTPStatusCode"].should.equal(400)
         # exc_info.value.response["Error"]["Message"].should.equal(
@@ -128,27 +128,27 @@ class TestDatabaseFunctions(unittest.TestCase):
         # )
 
         
-        # try:
-        #     put_item(
-        #         TableName=name,
-        #         Item={
-        #             "forum_name": {"S": ""},
-        #             "subject": {"S": "Check this out!"},
-        #             "Body": {"S": "http://url_to_lolcat.gif"},
-        #             "SentBy": {"S": "someone@somewhere.edu"},
-        #             "ReceivedTime": {"S": "12/9/2011 11:36:03 PM"},
-        #         },
-        #     )
-        # except ClientError as exc_info:
-        #     print("Error error")
+        try:
+            put_item(
+                TableName='todoUnitTestsTable',
+                Item={
+                    "forum_name": {"S": ""},
+                    "subject": {"S": "Check this out!"},
+                    "Body": {"S": "http://url_to_lolcat.gif"},
+                    "SentBy": {"S": "someone@somewhere.edu"},
+                    "ReceivedTime": {"S": "12/9/2011 11:36:03 PM"},
+                },
+            )
+        except ClientError as exc_info:
+            print("Error error")
         
-        # exc_info.value.response["Error"]["Code"].should.equal("ValidationException")
+        exc_info.value.response["Error"]["Code"] == 'ValidationException'
         # exc_info.value.response["ResponseMetadata"]["HTTPStatusCode"].should.equal(400)
         # exc_info.value.response["Error"]["Message"].should.equal(
         #     "One or more parameter values were invalid: An AttributeValue may not contain an empty string"
         # )
         
-        print ("Registro de salida segunda excepcion: " + str(exc_info) )
+        print ("Registro de salida segunda excepcion checkeada: " + str(exc_info) )
         # ex.value.response["Error"]["Code"].should.equal("ValidationException")
         # ex.value.response["ResponseMetadata"]["HTTPStatusCode"].should.equal(400)
         # ex.value.response["Error"]["Message"].should.equal(
