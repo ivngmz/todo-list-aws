@@ -87,7 +87,15 @@ class TestDatabaseFunctions(unittest.TestCase):
             print(result)
         except AttributeError as exc_info:
             print ("Se ha producido una excepcion: " + str(exc_info))
-        self.setUp
+        
+        # Creo de nuevo la tabla   
+        self.dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+        self.is_local = 'true'
+        self.uuid = "123e4567-e89b-12d3-a456-426614174000"
+        self.text = "Aprender DevOps y Cloud en la UNIR"
+
+        from src.todoList import create_todo_table
+        self.table = create_todo_table(self.dynamodb)
         print ('End: test_table_no_exists')
         
     def test_get_table_error_KeyError(self):
