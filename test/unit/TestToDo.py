@@ -92,7 +92,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Start: test_put_todo_error')
         # Testing file functions
         from src.todoList import put_item
-        from src.todoList import get_table
+        from src.todoList import create_todo_table
         
         # Table mock
         name = "TestTable"
@@ -109,7 +109,8 @@ class TestDatabaseFunctions(unittest.TestCase):
             ProvisionedThroughput={"ReadCapacityUnits": 5, "WriteCapacityUnits": 5},
             )
         
-        print(str(get_table(name)))
+        
+        print(str(create_todo_table(name)))
         
         with pytest.raises(ClientError) as exc_info:
             conn.put_item(
