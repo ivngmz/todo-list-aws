@@ -69,9 +69,9 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Start: test_table_no_exists')
         #delete dynamodb
         try:
-            self.table.delete()
+            self.table.delete('todoUnitTestsTable')
             self.dynamodb = None
-        except:
+        except KeyError as exc_info:
             print("No funcionó el borrado de la tabla mock")
         #run function from todoList.py
         from src.todoList import get_table
