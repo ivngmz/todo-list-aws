@@ -76,7 +76,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         #run function from todoList.py
         from src.todoList import get_table
         print(self.dynamodb)
-        result = get_table( TableName = 'todoUnitTestsTable' )
+        result = get_table(self.table)
         print ('Response GetTable' + str(result))
         print ('End: test_table_no_exists')
         
