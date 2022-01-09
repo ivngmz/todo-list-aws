@@ -11,7 +11,7 @@ def get_table(dynamodb=None):
     if not dynamodb:
         if os.environ['ENDPOINT_OVERRIDE']:
             URL = os.environ['ENDPOINT_OVERRIDE']
-        else: 
+        else:
             URL = 'http://dynamodb:8000'
         print('URL dynamoDB:'+URL)
         if URL:
