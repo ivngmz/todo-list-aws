@@ -134,7 +134,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         except ClientError as exc_info:
             print("Error error")
         if (response != None):
-            print ("Respuesta a put: " + str(response)
+            print ("Respuesta a put: " + str(response))
         else:
             print("Registro de salida segunda excepcion checkeada: " + str(exc_info) )
         
