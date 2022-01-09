@@ -44,7 +44,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('---------------------')
         print ('Start: tearDown')
         """Delete mock database and table after test is run"""
-        self.table.delete()
+        try:
+            self.table.delete()
+        except botocore.errorfactory.ResourceNotFoundException as exc_info:
+            print ("La tabla no existe")
         print ('Table deleted succesfully')
         #self.table_local.delete()
         self.dynamodb = None
@@ -76,8 +79,12 @@ class TestDatabaseFunctions(unittest.TestCase):
         #run function from todoList.py
         from src.todoList import get_table
         print(self.dynamodb)
-        result = get_table(self.table)
-        print ('Response GetTable' + str(result))
+        
+        try:
+            result = get_table(self.table)
+            print(result)
+        except AttributeError as exc_info:
+            print ("Se ha producido una excepcion: " + str(exc_info))
         print ('End: test_table_no_exists')
         
     def test_get_table_error_KeyError(self):
@@ -88,6 +95,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         try:
             response = get_item("")
             print (response)
+        
         except KeyError:
             print("Se ha generado la excepcion:KeyError")
 
