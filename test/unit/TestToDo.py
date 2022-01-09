@@ -110,10 +110,7 @@ class TestDatabaseFunctions(unittest.TestCase):
             ProvisionedThroughput={"ReadCapacityUnits": 5, "WriteCapacityUnits": 5},
             )
         
-        
-        create_todo_table(name)
-        print(get_table(name))
-        
+
         with pytest.raises(ClientError) as exc_info:
             conn.put_item(
                 TableName=name,
@@ -125,19 +122,26 @@ class TestDatabaseFunctions(unittest.TestCase):
                     "ReceivedTime": {"S": "12/9/2011 11:36:03 PM"},
                 },
             )
+            
         print ("Registro de salida primera excepcion checkeada: " + str(exc_info) )
         exc_info.value.response["Error"]["Code"] == 'ValidationException'
-        # exc_info.value.response["ResponseMetadata"]["HTTPStatusCode"].should.equal(400)
-        # exc_info.value.response["Error"]["Message"].should.equal(
-        #     "One or more parameter values were invalid: An AttributeValue may not contain an empty string"
-        # )
-
-        # intento grabar dato nulo
+        
+        exc_info = None # vacío objeto excepcion
+        
+        with pytest.raises(self.dynamodb.put_item.ClientError) as exc_info:
+            put_item(None,self.dynamodb)
+            
+        print ("Registro de salida segunda excepcion checkeada: " + str(exc_info) )
+        exc_info.value.response["Error"]["Code"] == 'ValidationException'
+        
+        exc_info = None # vacío objeto excepcion
+        
+        print ("Intento grabar dato nulo en instancia --todoUnitTestsTable--... ")
         try:
             response = put_item(None,self.dynamodb)
         
         except ClientError as exc_info:
-            print("Error error")
+            print("Excepcion generada: " + str(exc_info))
         
         if (response != None):
             print ("Respuesta a put: " + str(response))
@@ -145,26 +149,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         else:
             print("Registro de salida segunda excepcion checkeada: " + str(exc_info) )
         
-        # exc_info.value.response["Error"]["Code"] == 'ValidationException'
-        # exc_info.value.response["ResponseMetadata"]["HTTPStatusCode"].should.equal(400)
-        # exc_info.value.response["Error"]["Message"].should.equal(
-        #     "One or more parameter values were invalid: An AttributeValue may not contain an empty string"
-        # )
-        
-        # print ("Registro de salida segunda excepcion checkeada: " + str(exc_info) )
-        # ex.value.response["Error"]["Code"].should.equal("ValidationException")
-        # ex.value.response["ResponseMetadata"]["HTTPStatusCode"].should.equal(400)
-        # ex.value.response["Error"]["Message"].should.equal(
-        #     "One or more parameter values were invalid: An AttributeValue may not contain an empty string"
-        # )
-        # MSG_TEMPLATE = (
-        #     'An error occurred (400) when calling the put_item '
-        #     'operation1:lse'
-        # )
-        # try:
-        #     with pytest.raises(self.table.dynamodb.ClientError(MSG_TEMPLATE,put_item("", self.dynamodb))) as exc_info:
-        #         print("Imprimo Error: " + str(exc_info.ClientError))
-        # except AttributeError as e:
         print ('End: test_put_todo_error')
 
     def test_get_todo(self):
