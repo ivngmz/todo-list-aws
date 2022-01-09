@@ -64,6 +64,22 @@ class TestDatabaseFunctions(unittest.TestCase):
         #self.assertIn('todoTable', self.table_local.name)
         print ('End: test_table_exists')
 
+    def test_table_no_exists(self):
+        print ('---------------------')
+        print ('Start: test_table_no_exists')
+        #delete dynamodb
+        try:
+            self.table.delete()
+            self.dynamodb = None
+        except:
+            print("No funcionó el borrado de la tabla mock")
+        #run function from todoList.py
+        from src.todoList import get_table
+        print(self.dynamodb)
+        result = get_table(self.dynamodb)
+        print ('Response GetTable' + str(result))
+        print ('End: test_table_no_exists')
+        
     def test_get_table_error_KeyError(self):
         print ('---------------------')
         print ('Start: test_get_table_error_KeyError')
@@ -128,11 +144,21 @@ class TestDatabaseFunctions(unittest.TestCase):
         
         exc_info = None # vacío objeto excepcion
         
-        with pytest.raises(ClientError) as exc_info:
-            put_item(None,self.dynamodb)
+        MSG_TEMPLATE = (
+        'An error occurred (400) when calling the put_item '
+        'operation1:lse')
+        
+        try:
+            with pytest.raises(self.table.dynamodb.ClientError(MSG_TEMPLATE,put_item(None,""))) as exc_info:
+                print("Imprimo Error: " + str(exc_info))
+        except ClientError as exc_info:
+            print("Imprimo Error: " + str(exc_info))
             
-        print ("Registro de salida segunda excepcion checkeada: " + str(exc_info) )
-        exc_info.value.response["Error"]["Code"] == 'ValidationException'
+        # with pytest.raises(ClientError) as exc_info:
+        #     put_item(None,self.dynamodb)
+            
+        # print ("Registro de salida segunda excepcion checkeada: " + str(exc_info) )
+        # exc_info.value.response["Error"]["Code"] == 'ValidationException'
         
         exc_info = None # vacío objeto excepcion
         
