@@ -87,6 +87,7 @@ class TestDatabaseFunctions(unittest.TestCase):
             print(result)
         except AttributeError as exc_info:
             print ("Se ha producido una excepcion: " + str(exc_info))
+        self.setUp
         print ('End: test_table_no_exists')
         
     def test_get_table_error_KeyError(self):
