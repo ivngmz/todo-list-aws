@@ -110,7 +110,7 @@ class TestDatabaseFunctions(unittest.TestCase):
             )
 
         with pytest.raises(ClientError) as exc_info:
-            put_item(
+            conn.put_item(
                 TableName=name,
                 Item={
                     "forum_name": {"S": ""},
@@ -128,19 +128,13 @@ class TestDatabaseFunctions(unittest.TestCase):
         # )
 
         
-        # try:
-        #     put_item(
-        #         TableName='todoUnitTestsTable',
-        #         Item={
-        #             "forum_name": {"S": ""},
-        #             "subject": {"S": "Check this out!"},
-        #             "Body": {"S": "http://url_to_lolcat.gif"},
-        #             "SentBy": {"S": "someone@somewhere.edu"},
-        #             "ReceivedTime": {"S": "12/9/2011 11:36:03 PM"},
-        #         },
-        #     )
-        # except ClientError as exc_info:
-        #     print("Error error")
+        try:
+            put_item(None,self.dynamodb)
+        
+        except ClientError as exc_info:
+            print("Error error")
+            
+        print("Registro de salida primera excepcion checkeada: " + str(exc_info) )
         
         # exc_info.value.response["Error"]["Code"] == 'ValidationException'
         # exc_info.value.response["ResponseMetadata"]["HTTPStatusCode"].should.equal(400)
