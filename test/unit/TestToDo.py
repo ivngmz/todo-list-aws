@@ -151,7 +151,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         try:
             with pytest.raises(self.table.dynamodb.ClientError(MSG_TEMPLATE,put_item(None,""))) as exc_info:
                 print("Imprimo Error: " + str(exc_info))
-        except ClientError as exc_info:
+        except AttributeError as exc_info:
             print("Imprimo Error: " + str(exc_info))
             
         # with pytest.raises(ClientError) as exc_info:
