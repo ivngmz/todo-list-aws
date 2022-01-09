@@ -46,8 +46,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         """Delete mock database and table after test is run"""
         try:
             self.table.delete()
-        except botocore.errorfactory.ResourceNotFoundException as exc_info:
+        except botocore.Exception as exc_info:
             print ("La tabla no existe")
+        except AttributeError as exc_info:
+            print ("Se ha producido una excepcion: " + str(exc_info))
         print ('Table deleted succesfully')
         #self.table_local.delete()
         self.dynamodb = None
