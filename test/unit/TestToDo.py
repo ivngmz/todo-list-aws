@@ -129,9 +129,11 @@ class TestDatabaseFunctions(unittest.TestCase):
         ex.value.response["ResponseMetadata"]["HTTPStatusCode"].should.equal(400)
         ex.value.response["Error"]["Message"].should.equal(
             "One or more parameter values were invalid: An AttributeValue may not contain an empty string"
+        )
         MSG_TEMPLATE = (
-        'An error occurred (400) when calling the put_item '
-        'operation1:lse')
+            'An error occurred (400) when calling the put_item '
+            'operation1:lse'
+        )
         try:
             with pytest.raises(self.table.dynamodb.ClientError(MSG_TEMPLATE,put_item("", self.dynamodb))) as exc_info:
                 print("Imprimo Error: " + str(exc_info.ClientError))
