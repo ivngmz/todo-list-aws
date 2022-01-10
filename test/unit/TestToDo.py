@@ -114,13 +114,12 @@ class TestDatabaseFunctions(unittest.TestCase):
     def test_get_item_error(self):
         print ('---------------------')
         print ('Start: test_get_item_error')
-    	# Tabla a local
-    	from src.todoList import get_item
-    	get_item("",self.dynamodb) 
-    	self.assertRaises(
+        from src.todoList import get_item
+        get_item("",self.dynamodb)
+        self.assertRaises(
     	    Exception, 
     	    get_item(
-    	        "idNotFound",
+    	        "",
     	        self.dynamodb
     	        )) 
         print ('End: test_get_item_error')
