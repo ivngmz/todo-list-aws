@@ -115,13 +115,12 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('---------------------')
         print ('Start: test_get_item_error')
         from src.todoList import get_item
-        get_item(0,self.dynamodb)
-        print(self.assertRaises(
+        self.assertRaises(
     	    Exception, 
     	    get_item(
     	        "",
-    	        self.dynamodb
-    	        ))) 
+    	        ""
+    	        )) 
         print ('End: test_get_item_error')
     	
     def test_put_todo(self):
