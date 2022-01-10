@@ -47,8 +47,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         try:
             self.table.delete()
             print ("Table is been deleted...")
-        except botocore.Exception as exc_info:
-            print ("Table does not exists")
         except AttributeError as exc_info:
             print ("Exception: " + str(exc_info))
         print ('Table deleted succesfully')
@@ -110,7 +108,14 @@ class TestDatabaseFunctions(unittest.TestCase):
         
         except KeyError:
             print("An exception was generated and catched: KeyError")
-
+            
+    def test_get_item_error(self):
+    	# Tabla a local
+    	from src.todoList import get_item
+    		
+    	get_item(Exception, get_item("",self.dynamo) # El método debe retornar error 
+    	self.assertRaises(Exception, get_item("idNotFound",self.dynamo)) # El método debe retornar error
+    		
     def test_put_todo(self):
         print ('---------------------')
         print ('Start: test_put_todo')
@@ -242,7 +247,7 @@ class TestDatabaseFunctions(unittest.TestCase):
 
         # Testing file functions
         # Table mock
-        self.table.put_item(self.text, self.dynamodb)
+        put_item(self.text, self.dynamodb)
         result = get_items(self.dynamodb)
         print ('Response GetItems' + str(result))
         self.assertTrue(len(result) == 1)
