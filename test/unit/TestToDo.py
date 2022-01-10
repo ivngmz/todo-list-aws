@@ -113,8 +113,13 @@ class TestDatabaseFunctions(unittest.TestCase):
     	# Tabla a local
     	from src.todoList import get_item
     		
-    	get_item(Exception, get_item("",self.dynamo) # El método debe retornar error 
-    	self.assertRaises(Exception, get_item("idNotFound",self.dynamo)) # El método debe retornar error
+    	get_item("",self.dynamodb) # El método debe retornar error 
+    	self.assertRaises(
+    	    Exception, 
+    	    get_item(
+    	        "idNotFound",
+    	        self.dynamodb
+    	        )) # El método debe retornar error
     		
     def test_put_todo(self):
         print ('---------------------')
