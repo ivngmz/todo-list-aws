@@ -109,18 +109,22 @@ class TestDatabaseFunctions(unittest.TestCase):
         except KeyError:
             print("An exception was generated and catched: KeyError")
             
+        print ('End: test_get_table_error_KeyError')
+        
     def test_get_item_error(self):
+        print ('---------------------')
+        print ('Start: test_get_item_error')
     	# Tabla a local
     	from src.todoList import get_item
-    		
-    	get_item("",self.dynamodb) # El método debe retornar error 
+    	get_item("",self.dynamodb) 
     	self.assertRaises(
     	    Exception, 
     	    get_item(
     	        "idNotFound",
     	        self.dynamodb
-    	        )) # El método debe retornar error
-    		
+    	        )) 
+        print ('End: test_get_item_error')
+    	
     def test_put_todo(self):
         print ('---------------------')
         print ('Start: test_put_todo')
