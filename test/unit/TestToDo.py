@@ -107,9 +107,9 @@ class TestDatabaseFunctions(unittest.TestCase):
             print (response)
         
         except KeyError as exc_info:
-            print(exc_info)
+            print(str(exc_info))
         except TypeError as exc_info:
-            print(exc_info)
+            print(str(exc_info))
             
         print ('End: test_get_table_error_KeyError')
         
@@ -125,7 +125,7 @@ class TestDatabaseFunctions(unittest.TestCase):
                 ""
                 ))
         except TypeError as exc_info:
-            print(exc_info)
+            print(str(exc_info)
             
         print ('End: test_get_item_error')
     	
@@ -328,9 +328,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         try:
             with pytest.raises(self.table.dynamodb.ClientError(MSG_TEMPLATE,update_item("","","",""))) as exc_info:
                 print("Imprimo Error: " + str(exc_info.ClientError))
-        except AttributeError as e:
-            responseUpdateError = update_item("@@@@","","false",self.dynamodb)
-            print("Imprimo Error: " + str(responseUpdateError))
+        except AttributeError as exc_info:
+            print(str(exc_info))
         
         print ('End: test_update_todo_error')
 
@@ -397,7 +396,7 @@ class TestDatabaseFunctions(unittest.TestCase):
             delete_item(
                 "@@@@",
                 self.dynamodb))
-    
+        print ('End: test_delete_todo_error')
 
 if __name__ == '__main__':
     unittest.main()
