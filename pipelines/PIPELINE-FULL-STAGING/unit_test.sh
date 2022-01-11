@@ -5,7 +5,7 @@ set -x
 export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 echo "PYTHONPATH: $PYTHONPATH"
 export DYNAMODB_TABLE=todoUnitTestsTable
-export ENDPOINT_OVERRIDE="http://"$(curl http://checkip.amazonaws.com)
+export ENDPOINT_OVERRIDE="http://"$(nslookup $(curl -s  http://checkip.amazonaws.com) | grep name | awk '{print $4}' | sed 's/.$//')
 python test/unit/TestToDo.py
 pip show coverage
 coverage run --include=src/todoList.py test/unit/TestToDo.py
