@@ -97,33 +97,37 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.table = create_todo_table(self.dynamodb)
         print ('End: test_table_no_exists')
         
-    # def test_get_table_error_KeyError(self):
-    #     print ('---------------------')
-    #     print ('Start: test_get_table_error_KeyError')
-    #     conn = boto3.client("dynamodb", region_name="us-west-2")
-    #     from src.todoList import get_item
-    #     try:
-    #         response = get_item("")
-    #         print (response)
+    def test_get_table_error_KeyError(self):
+        print ('---------------------')
+        print ('Start: test_get_table_error_KeyError')
+        conn = boto3.client("dynamodb", region_name="us-west-2")
+        from src.todoList import get_item
+        try:
+            response = get_item("")
+            print (response)
         
-    #     except KeyError:
-    #         print("An exception was generated and catched: KeyError")
-    #     except TypeError:
-    #         print("An exception was generated and catched: TypeError")
+        except KeyError as exc_info:
+            print(exc_info)
+        except TypeError as exc_info:
+            print(exc_info)
             
-    #     print ('End: test_get_table_error_KeyError')
+        print ('End: test_get_table_error_KeyError')
         
-    # def test_get_item_error(self):
-    #     print ('---------------------')
-    #     print ('Start: test_get_item_error')
-    #     from src.todoList import get_item
-    #     self.assertRaises(
-    # 	    Exception, 
-    # 	    get_item(
-    # 	        "",
-    # 	        ""
-    # 	        )) 
-    #     print ('End: test_get_item_error')
+    def test_get_item_error(self):
+        print ('---------------------')
+        print ('Start: test_get_item_error')
+        from src.todoList import get_item
+        try:
+            self.assertRaises(
+                Exception, 
+                get_item(
+                "",
+                ""
+                ))
+        except TypeError as exc_info:
+            print(exc_info)
+            
+        print ('End: test_get_item_error')
     	
     def test_put_todo(self):
         print ('---------------------')
