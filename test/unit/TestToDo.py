@@ -108,6 +108,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         
         except KeyError:
             print("An exception was generated and catched: KeyError")
+        except TypeError:
+            print("An exception was generated and catched: TypeError")
             
         print ('End: test_get_table_error_KeyError')
         
