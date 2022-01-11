@@ -12,9 +12,9 @@ def get_table(dynamodb=None):
         URL = os.environ['ENDPOINT_OVERRIDE']
         if URL:
             boto3.client = functools.partial(boto3.client, endpoint_url=URL)
-            boto3.resource = functools.partial(boto3.resource,
+            boto3.resource = functools.partial("local-TodosDynamoDbTable",
                                                endpoint_url=URL)
-        dynamodb = boto3.resource("dynamodb")
+        dynamodb = boto3.resource("local-TodosDynamoDbTable")
     # fetch todo from the database
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
     return table
