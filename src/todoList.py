@@ -30,7 +30,7 @@ def get_item(key, dynamodb=None):
         )
 
     except Exception as e:
-        raise e
+        print (e)
     else:
         print('Result getItem:'+str(result))
         if 'Item' in result:
