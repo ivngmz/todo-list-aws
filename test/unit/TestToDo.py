@@ -125,8 +125,8 @@ class TestDatabaseFunctions(unittest.TestCase):
                 ""
                 ))
         except TypeError as exc_info:
-            print(str(exc_info)
-            
+            print(str(exc_info))
+
         print ('End: test_get_item_error')
     	
     def test_put_todo(self):
