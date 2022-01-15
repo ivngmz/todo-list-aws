@@ -13,8 +13,3 @@ def lambda_handler(event, context):
 
     print(translate_response)
     return translate_response['TranslatedText']
-
-# Ejemplo de Body para la peticion POST
-# {
-#     "text":"¿Cómo está el señor calamar?"
-# }
