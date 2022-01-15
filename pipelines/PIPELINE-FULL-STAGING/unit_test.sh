@@ -4,12 +4,10 @@ source todo-list-aws/bin/activate
 set -x
 export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 echo "PYTHONPATH: $PYTHONPATH"
-whoami
-CONTAINER=$(docker ps -a | grep 'dynamodb-local' | cut -d " " -f 1)
-docker start $CONTAINER
+docker start eed9128e1f0d
 export DYNAMODB_TABLE=todoUnitTestsTable
-echo ${Stage}"-TodosDynamoDbTable"
-export ENDPOINT_OVERRIDE="${Stage}-TodosDynamoDbTable"
+echo "https://"$Stage"-TodosDynamoDbTable"
+#export ENDPOINT_OVERRIDE="${Stage}-TodosDynamoDbTable"
 #"http://127.0.0.1:8000"
 nc -vz 127.0.0.1 8000
 echo "Iniciando dynamodb en local ..."
@@ -22,4 +20,4 @@ coverage run --include=src/todoList.py test/unit/TestToDo.py
 coverage report -m
 coverage report
 coverage xml
-docker stop $(docker ps -a | grep 'dynamodb-local' | cut -d " " -f 1)
+docker stop eed9128e1f0d
