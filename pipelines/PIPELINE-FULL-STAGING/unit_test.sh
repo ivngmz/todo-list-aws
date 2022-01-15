@@ -11,7 +11,7 @@ export ENDPOINT_OVERRIDE="http://127.0.0.1:8000"
 nc -vz 127.0.0.1 8000
 if [ $? != 0 ]; then
         echo "El contenedor docker de dynamodb no está levantado"
-        exit
+        exit 1
     fi
 echo "Mostrando tablas ..."
 aws dynamodb list-tables --endpoint-url http://127.0.0.1:8000 --endpoint-url http://localhost:8000 --region us-east-1
