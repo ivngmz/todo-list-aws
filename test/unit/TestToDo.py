@@ -37,7 +37,7 @@ class TestDatabaseFunctions(unittest.TestCase):
 
         from src.todoList import create_todo_table
         self.table = create_todo_table(self.dynamodb)
-        #self.table_local = create_todo_table()
+        self.table_local = create_todo_table()
         print ('End: setUp')
 
     def tearDown(self):
@@ -50,7 +50,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         except AttributeError as exc_info:
             print ("Exception: " + str(exc_info))
         print ('Table deleted succesfully')
-        #self.table_local.delete()
+        self.table_local.delete()
         self.dynamodb = None
         print ('End: tearDown')
 
@@ -59,13 +59,13 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Start: test_table_exists')
         conn = boto3.client('dynamodb', region_name='us-east-1')
         self.assertTrue(self.table)  # check if we got a result
-        #self.assertTrue(self.table_local)  # check if we got a result
+        self.assertTrue(self.table_local)  # check if we got a result
         
         print('Table name:' + self.table.name)
         tableName = os.environ['DYNAMODB_TABLE'];
         # check if the table name is 'ToDo'
         self.assertIn(tableName, self.table.name)
-        #self.assertIn('todoTable', self.table_local.name)
+        self.assertIn('todoTable', self.table_local.name)
         print ('End: test_table_exists')
 
     def test_table_no_exists(self):
