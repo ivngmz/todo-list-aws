@@ -4,7 +4,9 @@ source todo-list-aws/bin/activate
 set -x
 export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 echo "PYTHONPATH: $PYTHONPATH"
+whoami
 docker start $(docker ps -a | grep 'dynamodb-local' | cut -d " " -f 1)
+export DYNAMODB_TABLE=todoUnitTestsTable
 export ENDPOINT_OVERRIDE="http://127.0.0.1:8000"
 nc -vz 127.0.0.1 8000
 echo "Iniciando dynamodb en local ..."
