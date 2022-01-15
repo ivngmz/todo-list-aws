@@ -154,7 +154,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         name = "TestTable"
         conn = boto3.client(
             "dynamodb",
-            region_name="us-west-2",
+            region_name="us-east-1",
             aws_access_key_id="ak",
             aws_secret_access_key="sk",
             )
