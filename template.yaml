@@ -123,6 +123,21 @@ Resources:
             Method: post
 
 
+  TranslateTodoFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: src/
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/LabRole"
+      Handler: translateItem.translate
+      Runtime: python3.7
+      Events:
+        Create:
+          Type: Api
+          Properties:
+            Path: /todos/{lang}/{id}
+            Method: get
+
+
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM.
@@ -148,3 +163,6 @@ Outputs:
   TranslateTodoApi:
     Description: "API Gateway endpoint URL for ${opt:stage} stage for Get TODO"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/translate"
+  TranslateTodoItemApi:
+    Description: "API Gateway endpoint URL for ${opt:stage} stage for Get TODO"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/todos/{lang}/{id}"
