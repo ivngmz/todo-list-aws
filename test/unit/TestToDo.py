@@ -320,17 +320,6 @@ class TestDatabaseFunctions(unittest.TestCase):
                 self.uuid,
                 "",
                 self.dynamodb))
-        
-        # MSG_TEMPLATE = (
-        # 'An error occurred (400) when calling the put_item '
-        # 'operation1:lse')
-        
-        # try:
-        #     with pytest.raises(self.table.dynamodb.ClientError(MSG_TEMPLATE,update_item("","","",""))) as exc_info:
-        #         print("Imprimo Error: " + str(exc_info.ClientError))
-        # except AttributeError as exc_info:
-        #     print(str(exc_info))
-        
         print ('End: test_update_todo_error')
 
     def test_delete_todo(self):
