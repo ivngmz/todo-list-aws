@@ -11,7 +11,7 @@ echo "https://"$Stage"-TodosDynamoDbTable"
 export ENDPOINT_OVERRIDE="http://127.0.0.1:8000"
 nc -vz 127.0.0.1 8000
 echo "Iniciando dynamodb en local ..."
-aws dynamodb create-table --table-name dynamodb --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --endpoint-url http://localhost:8000
+aws dynamodb create-table --table-name local-TodosDynamoDbTable --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --endpoint-url http://localhost:8000
 echo "Mostrando tablas ..."
 aws dynamodb list-tables --endpoint-url http://127.0.0.1:8000
 python test/unit/TestToDo.py
