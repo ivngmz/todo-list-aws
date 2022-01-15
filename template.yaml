@@ -119,13 +119,13 @@ Resources:
         Create:
           Type: Api
           Properties:
-            Path: /todos/translate
+            Path: /translate
             Method: post
 
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
+  # Find out more about other implicit resources you can reference within SAM.
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   BaseUrlApi:
     Description: "Base URL of API"
@@ -147,4 +147,4 @@ Outputs:
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/todos/{id}"
   TranslateTodoApi:
     Description: "API Gateway endpoint URL for ${opt:stage} stage for Get TODO"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/todos/translate"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/translate"
