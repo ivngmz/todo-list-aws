@@ -4,7 +4,7 @@ source todo-list-aws/bin/activate
 set -x
 export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 echo "PYTHONPATH: $PYTHONPATH"
-export DYNAMODB_TABLE=todoUnitTestsTable
+docker start $(docker ps -a | grep 'dynamodb-local' | cut -d " " -f 1)
 export ENDPOINT_OVERRIDE="http://127.0.0.1:8000"
 nc -vz 127.0.0.1 8000
 echo "Iniciando dynamodb en local ..."
@@ -17,3 +17,4 @@ coverage run --include=src/todoList.py test/unit/TestToDo.py
 coverage report -m
 coverage report
 coverage xml
+docker stop $(docker ps -a | grep 'dynamodb-local' | cut -d " " -f 1)
