@@ -25,12 +25,12 @@ def lambda_handler(event, context):
             SourceLanguageCode='auto',
             TargetLanguageCode=review_language
             )
-        logger.error(translate_response)
     except KeyError as exc:
         response = {
             "statusCode": 417,
             "body": json.dumps("Error: Key error" + str(exc))
         }
+        logger.error(translate_response)
 
     if (translate_response):
         response = {
