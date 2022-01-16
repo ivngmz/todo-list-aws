@@ -1,7 +1,7 @@
 import logging
 import boto3
 import json
-import todoList
+# import todoList
 
 global translate_client
 translate_client = boto3.client('translate')
@@ -17,7 +17,7 @@ def lambda_handler(event, context):
     global translate_response
     translate_response = ""
     global response
-    
+
     try:
         review_text = data['text']
         translate_response = translate_client.translate_text(
@@ -29,7 +29,7 @@ def lambda_handler(event, context):
     except KeyError as exc:
         response = {
             "statusCode": 417,
-            "body": json.dumps("Error: Key error")
+            "body": json.dumps("Error: Key error" + str(exc))
         }
 
     if (translate_response):
@@ -37,8 +37,8 @@ def lambda_handler(event, context):
             "statusCode": 200,
             "body": json.dumps(translate_response)
         }
-    elif (response != None):
-        print ("we have a problem")
+    elif response is not None:
+        print("we have a problem")
     else:
         response = {
             "statusCode": 400,
