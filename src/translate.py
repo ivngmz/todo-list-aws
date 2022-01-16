@@ -1,7 +1,6 @@
 import logging
 import boto3
 import json
-#import todoList
 
 global translate_client
 translate_client = boto3.client('translate')
