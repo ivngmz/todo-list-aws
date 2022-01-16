@@ -1,12 +1,17 @@
 # from pprint import pprint
 import warnings
 import unittest
+import pytest
 import boto3
-from moto import mock_dynamodb2
+import botocore
+from moto import mock_dynamodb2, mock_dynamodb2_deprecated
+from botocore.exceptions import ClientError
 import sys
 import os
 import json
+from botocore.utils import get_service_module_name
 
+@mock_dynamodb2_deprecated
 @mock_dynamodb2
 class TestDatabaseFunctions(unittest.TestCase):
     def setUp(self):
@@ -32,14 +37,18 @@ class TestDatabaseFunctions(unittest.TestCase):
 
         from src.todoList import create_todo_table
         self.table = create_todo_table(self.dynamodb)
-        #self.table_local = create_todo_table()
+        #elf.table_local = create_todo_table()
         print ('End: setUp')
 
     def tearDown(self):
         print ('---------------------')
         print ('Start: tearDown')
         """Delete mock database and table after test is run"""
-        self.table.delete()
+        try:
+            self.table.delete()
+            print ("Table is been deleted...")
+        except AttributeError as exc_info:
+            print ("Exception: " + str(exc_info))
         print ('Table deleted succesfully')
         #self.table_local.delete()
         self.dynamodb = None
@@ -48,17 +57,78 @@ class TestDatabaseFunctions(unittest.TestCase):
     def test_table_exists(self):
         print ('---------------------')
         print ('Start: test_table_exists')
-        #self.assertTrue(self.table)  # check if we got a result
+        conn = boto3.client('dynamodb', region_name='us-east-1')
+        self.assertTrue(self.table)  # check if we got a result
         #self.assertTrue(self.table_local)  # check if we got a result
-
+        
         print('Table name:' + self.table.name)
         tableName = os.environ['DYNAMODB_TABLE'];
         # check if the table name is 'ToDo'
         self.assertIn(tableName, self.table.name)
         #self.assertIn('todoTable', self.table_local.name)
         print ('End: test_table_exists')
-        
 
+    def test_table_no_exists(self):
+        print ('---------------------')
+        print ('Start: test_table_no_exists')
+        #delete dynamodb
+        try:
+            print("Deleting table... " + str(self.table.delete( TableName = 'todoUnitTestsTable' )))
+            self.dynamodb = None
+        except KeyError as exc_info:
+            print("Fail to delete mock table")
+        #run function from todoList.py
+        from src.todoList import get_table
+        print(self.dynamodb)
+        
+        try:
+            result = get_table(self.table)
+            print(result)
+        except AttributeError as exc_info:
+            print ("Exception happened: " + str(exc_info))
+        
+        # Creo de nuevo la tabla   
+        self.dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+        self.is_local = 'true'
+        self.uuid = "123e4567-e89b-12d3-a456-426614174000"
+        self.text = "Aprender DevOps y Cloud en la UNIR"
+
+        from src.todoList import create_todo_table
+        self.table = create_todo_table(self.dynamodb)
+        print ('End: test_table_no_exists')
+        
+    def test_get_table_error_KeyError(self):
+        print ('---------------------')
+        print ('Start: test_get_table_error_KeyError')
+        conn = boto3.client("dynamodb", region_name="us-west-2")
+        from src.todoList import get_item
+        try:
+            response = get_item("")
+            print (response)
+        
+        except KeyError as exc_info:
+            print(str(exc_info))
+        except TypeError as exc_info:
+            print(str(exc_info))
+            
+        print ('End: test_get_table_error_KeyError')
+        
+    def test_get_item_error(self):
+        print ('---------------------')
+        print ('Start: test_get_item_error')
+        from src.todoList import get_item
+        try:
+            self.assertRaises(
+                Exception, 
+                get_item(
+                "",
+                ""
+                ))
+        except TypeError as exc_info:
+            print(str(exc_info))
+
+        print ('End: test_get_item_error')
+    	
     def test_put_todo(self):
         print ('---------------------')
         print ('Start: test_put_todo')
@@ -68,9 +138,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         response = put_item(self.text, self.dynamodb)
         print ('Response put_item:' + str(response))
         self.assertEqual(200, response['statusCode'])
-        # Table mock
-        #self.assertEqual(200, put_item(self.text, self.dynamodb)[
-        #                 'ResponseMetadata']['HTTPStatusCode'])
+        #Table mock
         print ('End: test_put_todo')
 
     def test_put_todo_error(self):
@@ -78,9 +146,78 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Start: test_put_todo_error')
         # Testing file functions
         from src.todoList import put_item
+        from src.todoList import create_todo_table
+        from src.todoList import get_table
+        from src.todoList import get_item
+        
         # Table mock
-        self.assertRaises(Exception, put_item("", self.dynamodb))
-        self.assertRaises(Exception, put_item("", self.dynamodb))
+        name = "TestTable"
+        conn = boto3.client(
+            "dynamodb",
+            region_name="us-east-1",
+            aws_access_key_id="ak",
+            aws_secret_access_key="sk",
+            )
+        conn.create_table(
+            TableName=name,
+            KeySchema=[{"AttributeName": "forum_name", "KeyType": "HASH"}],
+            AttributeDefinitions=[{"AttributeName": "forum_name", "AttributeType": "S"}],
+            ProvisionedThroughput={"ReadCapacityUnits": 5, "WriteCapacityUnits": 5},
+            )
+        
+        # Forcing exception in mock
+
+        with pytest.raises(ClientError) as exc_info:
+            conn.put_item(
+                TableName=name,
+                Item={
+                    "forum_name": {"S": ""},
+                    "subject": {"S": "Check this out!"},
+                    "Body": {"S": "http://url_to_lolcat.gif"},
+                    "SentBy": {"S": "someone@somewhere.edu"},
+                    "ReceivedTime": {"S": "12/9/2011 11:36:03 PM"},
+                },
+            )
+            
+        print ("An exception was raised on TestTable: " + str(exc_info) )
+        exc_info.value.response["Error"]["Code"] == 'ValidationException'
+        
+        exc_info = None # empty the exception object
+        
+        try:
+            print(get_item("",self.conn))
+        # except conn.exceptions.ClientError as exc_info:
+        #     print(str(exc_info))
+        except AttributeError as exc_info:
+            print(str(exc_info))
+        
+        exc_info = None # empty the exception object
+        
+        MSG_TEMPLATE = (
+        'An error occurred (400) when calling the put_item '
+        'operation1:lse')
+        
+        try:
+            with pytest.raises(self.table.dynamodb.ClientError(MSG_TEMPLATE,put_item(None,""))) as exc_info:
+                print("An exception was raised on --todoUnitTestsTable-- testing instance: " + str(exc_info))
+        except AttributeError as exc_info:
+            print("Take a look at the raised exception: " + str(exc_info))
+            
+        exc_info = None # empty the exception object
+        
+        print ("Trying to delete None value in --todoUnitTestsTable--... ")
+        try:
+            response = put_item(None,self.dynamodb)
+        
+        except ClientError as exc_info:
+            print("Exception generated: " + str(exc_info))
+        
+        if (response != None):
+            print ("Response to put: " + str(response))
+        
+        else:
+            print("Exception output when try to delete None value in --todoUnitTestsTable--: " + str(exc_info) )
+        
         print ('End: test_put_todo_error')
 
     def test_get_todo(self):
@@ -104,6 +241,16 @@ class TestDatabaseFunctions(unittest.TestCase):
             self.text,
             responseGet['text'])
         print ('End: test_get_todo')
+        
+    def test_get_todo_error_ClientError(self):
+        print ('---------------------')
+        print ('Start: test_get_todo_error_ClientError')
+        from src.todoList import get_item
+        try:
+            get_item("Esto no existe",self.dynamodb)
+        except self.table.dynamodb.ClientError as exc_info:
+            print("Se ha levantado la excepcion: "  + str(exc_info.ClientError))
+        print ('End: test_get_todo_error_ClientError')
     
     def test_list_todo(self):
         print ('---------------------')
@@ -144,7 +291,7 @@ class TestDatabaseFunctions(unittest.TestCase):
 
     def test_update_todo_error(self):
         print ('---------------------')
-        print ('Start: atest_update_todo_error')
+        print ('Start: test_update_todo_error')
         from src.todoList import put_item
         from src.todoList import update_item
         updated_text = "Aprender más cosas que DevOps y Cloud en la UNIR"
@@ -173,7 +320,7 @@ class TestDatabaseFunctions(unittest.TestCase):
                 self.uuid,
                 "",
                 self.dynamodb))
-        print ('End: atest_update_todo_error')
+        print ('End: test_update_todo_error')
 
     def test_delete_todo(self):
         print ('---------------------')
@@ -184,23 +331,61 @@ class TestDatabaseFunctions(unittest.TestCase):
         # Testing file functions
         # Table mock
         responsePut = put_item(self.text, self.dynamodb)
+        totalItems = len(get_items(self.dynamodb))
+        print ('Total Items tras put: ' + str(totalItems))
         print ('Response PutItem' + str(responsePut))
         idItem = json.loads(responsePut['body'])['id']
-        print ('Id item:' + idItem)
+        print ('Id item: ' + idItem)
         delete_item(idItem, self.dynamodb)
-        print ('Item deleted succesfully')
+        totalItems = len(get_items(self.dynamodb))
+        if (totalItems == 0):
+            print ('Item ' + idItem + ' deleted succesfully')
+        print ('Total Items tras delete: ' + str(totalItems))
         self.assertTrue(len(get_items(self.dynamodb)) == 0)
         print ('End: test_delete_todo')
 
     def test_delete_todo_error(self):
         print ('---------------------')
         print ('Start: test_delete_todo_error')
+        conn = boto3.client('dynamodb', region_name='us-east-1')
         from src.todoList import delete_item
+        from src.todoList import put_item
         # Testing file functions
+        responsePut = put_item(self.text, self.dynamodb)
+        idItem = json.loads(responsePut['body'])['id']
+        print ('Intento Borrar dos veces el Id item:' + idItem)
+        print(delete_item(idItem, self.dynamodb))
+        print(delete_item(idItem, self.dynamodb))
+        
         self.assertRaises(TypeError, delete_item("", self.dynamodb))
+        
+        MSG_TEMPLATE = (
+        'An error occurred (400) when calling the put_item '
+        'operation1:lse')
+        
+        self.assertRaises(
+            Exception,
+            delete_item(
+                "@@@@",
+                self.dynamodb))
+        self.assertRaises(
+            TypeError,
+            delete_item(
+                "@@@@",
+                self.dynamodb))
+        self.assertRaises(
+            Exception,
+            delete_item(
+                "@@@@",
+                self.dynamodb))
+        
+        
+        self.assertRaises(
+            ClientError,
+            delete_item(
+                "@@@@",
+                self.dynamodb))
         print ('End: test_delete_todo_error')
-
-
 
 if __name__ == '__main__':
     unittest.main()
