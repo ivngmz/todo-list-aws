@@ -35,7 +35,7 @@ def lambda_handler(event, context):
     if (translate_response):
         response = {
             "statusCode": 200,
-            "body": json.dumps(translate_response)
+            "body": json.dumps(translate_response['TranslatedText'])
         }
     elif response is not None:
         print("we have a problem")
