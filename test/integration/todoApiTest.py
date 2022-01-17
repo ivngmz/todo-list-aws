@@ -136,7 +136,9 @@ class TestApi(unittest.TestCase):
         languages = {"Español":"es", "Frances":"fr", "aleman":"de", "Checo":"cs"}
         
         for key, value in languages.items():
+            print('Starting test for translate TODO: '+str(key))
             url = BASE_URL+"/todos/"+ID_TODO+"/"+str(value)
+            print(url)
             response = requests.get(url)
             json_response = response.json()
             print('Response Get Todo en '+str(key)+': '+str(json_response))
