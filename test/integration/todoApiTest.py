@@ -137,7 +137,7 @@ class TestApi(unittest.TestCase):
         
         for key, value in languages.items():
             print('Starting test for translate TODO: '+str(key))
-            url = BASE_URL+"/todos/"+ID_TODO+"/"+str(value)
+            url = BASE_URL+"/todos/"+ID_TODO+"/"+value+"/"
             print(url)
             response = requests.get(url)
             json_response = response.json()
