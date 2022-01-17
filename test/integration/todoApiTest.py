@@ -139,6 +139,9 @@ class TestApi(unittest.TestCase):
             response = requests.get(url)
             json_response = response.json()
             print('Response Get Todo en '+str(key)+': '+str(json_response))
+            self.assertEqual(
+                response.status_code, 200, "Error en la petición API a {url}"
+            )
         print('End - integration test Get TODO Translated')
     
     def test_api_updatetodo(self):
