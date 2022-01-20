@@ -1,7 +1,36 @@
 pipeline {
     agent any
     stages {
+<<<<<<< HEAD
         stage('Staging Develop'){
+=======
+    
+        stage('NewFeature'){
+            steps{
+                echo 'Starting aging job'
+                build job: 'PIPELINE-FULL-STAGING', parameters: [
+                      string(name:'ENVIRONMENT', value: "newfeature")]
+            }
+        }
+        stage('Merge NewFeature-Develop'){
+            steps{
+                sh script: """
+                    set -x
+                    git branch -a
+                    git checkout -b newfeature-one origin/newfeature-one
+                    git checkout -b develop origin/newfeature-one
+                    git merge develop
+                """, label: "Merging code to develop"
+                sshagent(['github']) {
+			withCredentials([gitUsernamePassword(credentialsId: 'github',
+                 	gitToolName: 'git-tool')]) {
+  				sh 'git push origin develop'
+				}                
+                }
+            }
+        }
+        stage('Staging Devcelop-Production'){
+>>>>>>> 6fd4d23dfc8743f272f03a91aeaa160e0fe9a87d
             steps{
                 echo 'Starting aging job'
                 build job: 'PIPELINE-FULL-STAGING', parameters: [
