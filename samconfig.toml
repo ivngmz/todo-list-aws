@@ -11,6 +11,19 @@ parameter_overrides = "Stage=\"default\""
 image_repositories = []
 confirm_changeset = true
 
+
+[newfeature]
+[newfeature.deploy]
+[newfeature.deploy.parameters]
+stack_name = "todo-list-aws-newfeature"
+s3_bucket = "aws-sam-cli-managed-newfeature-ivngmz"
+s3_prefix = "todo-list-aws"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "Stage=\"newfeature\""
+image_repositories = []
+
+
 [staging]
 [staging.deploy]
 [staging.deploy.parameters]
