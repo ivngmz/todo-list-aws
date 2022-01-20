@@ -12,6 +12,7 @@ Parameters:
     Default: default
     AllowedValues:
       - default
+      - newfeature
       - staging
       - production
     Description: Enter staging or production. Default is default  
