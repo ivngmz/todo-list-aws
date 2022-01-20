@@ -14,7 +14,7 @@ pipeline {
                     set -x
                     git branch -a
                     git checkout -b newfeature-one origin/newfeature-one
-                    git checkout -b develop origin/newfeature-one
+                    git checkout -b develop origin/develop
                     git merge develop
                 """, label: "Merging code to develop"
                 sshagent(['github']) {
