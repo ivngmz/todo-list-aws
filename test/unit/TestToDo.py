@@ -151,61 +151,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import get_item
         
         # Table mock
-        name = "TestTable"
-        conn = boto3.client(
-            "dynamodb",
-            region_name="us-east-1",
-            aws_access_key_id="ak",
-            aws_secret_access_key="sk",
-            )
-        conn.create_table(
-            TableName=name,
-            KeySchema=[{"AttributeName": "forum_name", "KeyType": "HASH"}],
-            AttributeDefinitions=[{"AttributeName": "forum_name", "AttributeType": "S"}],
-            ProvisionedThroughput={"ReadCapacityUnits": 5, "WriteCapacityUnits": 5},
-            )
-        
-        # Forcing exception in mock
-
-        with pytest.raises(ClientError) as exc_info:
-            conn.put_item(
-                TableName=name,
-                Item={
-                    "forum_name": {"S": ""},
-                    "subject": {"S": "Check this out!"},
-                    "Body": {"S": "http://url_to_lolcat.gif"},
-                    "SentBy": {"S": "someone@somewhere.edu"},
-                    "ReceivedTime": {"S": "12/9/2011 11:36:03 PM"},
-                },
-            )
-            
-        print ("An exception was raised on TestTable: " + str(exc_info) )
-        exc_info.value.response["Error"]["Code"] == 'ValidationException'
-        
-        exc_info = None # empty the exception object
-        
-        try:
-            print(get_item("",self.conn))
-        # except conn.exceptions.ClientError as exc_info:
-        #     print(str(exc_info))
-        except AttributeError as exc_info:
-            print(str(exc_info))
-        
-        exc_info = None # empty the exception object
-        
-        MSG_TEMPLATE = (
-        'An error occurred (400) when calling the put_item '
-        'operation1:lse')
-        
-        try:
-            with pytest.raises(self.table.dynamodb.ClientError(MSG_TEMPLATE,put_item(None,""))) as exc_info:
-                print("An exception was raised on --todoUnitTestsTable-- testing instance: " + str(exc_info))
-        except AttributeError as exc_info:
-            print("Take a look at the raised exception: " + str(exc_info))
-            
-        exc_info = None # empty the exception object
-        
-        print ("Trying to delete None value in --todoUnitTestsTable--... ")
         try:
             response = put_item(None,self.dynamodb)
         
