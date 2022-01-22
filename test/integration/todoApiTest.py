@@ -111,6 +111,38 @@ class TestApi(unittest.TestCase):
             response.status_code, 200, "Error en la petición API a {url}"
         )
         print('End - integration test Get TODO')
+
+    def test_api_gettodo_translated(self):
+        print('---------------------------------------')
+        print('Starting - integration test Get TODO translated')
+        #Add TODO
+        url = BASE_URL+"/todos"
+        data = {
+         "text": "Integration text example - GET - Translated"
+        }
+        response = requests.post(url, data=json.dumps(data))
+        json_response = response.json()
+        print('Response Add Todo: '+ str(json_response))
+        jsonbody= json.loads(json_response['body'])
+        ID_TODO = jsonbody['id']
+        print ('ID todo:'+ID_TODO)
+        self.assertEqual(
+            response.status_code, 200, "Error en la petición API a {url}"
+        )
+        #Test GET TODO TRANSLATED
+        languages = {"Español":"es", "Frances":"fr", "aleman":"de", "Checo":"cs"}
+        
+        for key, value in languages.items():
+            print('Starting test for GET translate TODO: '+str(key))
+            url = BASE_URL+"/todos/"+ID_TODO+"/"+value+"/"
+            print(url)
+            response = requests.get(url)
+            json_response = response.json()
+            print('Response Get Todo en '+str(key)+': '+str(json_response))
+            self.assertEqual(
+                response.status_code, 200, "Error en la petición API a {url}"
+            )
+        print('End - integration test Get TODO Translated')
     
     def test_api_updatetodo(self):
         print('---------------------------------------')
