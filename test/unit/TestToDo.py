@@ -89,6 +89,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         
         # Creo de nuevo la tabla   
         self.dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+        self.dynamodb = boto3.client('dynamodb', region_name="us-west-1")
         self.is_local = 'true'
         self.uuid = "123e4567-e89b-12d3-a456-426614174000"
         self.text = "Aprender DevOps y Cloud en la UNIR"
@@ -100,7 +101,7 @@ class TestDatabaseFunctions(unittest.TestCase):
     def test_get_table_error_KeyError(self):
         print ('---------------------')
         print ('Start: test_get_table_error_KeyError')
-        conn = boto3.client("dynamodb", region_name="us-west-2")
+        conn = boto3.client("dynamodb", region_name="us-west-1")
         from src.todoList import get_item
         try:
             response = get_item("")
