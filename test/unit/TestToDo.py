@@ -89,18 +89,22 @@ class TestDatabaseFunctions(unittest.TestCase):
         
         # Creo de nuevo la tabla   
         self.dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+        self.dynamodb = boto3.client('dynamodb', region_name="us-east-1")
         self.is_local = 'true'
         self.uuid = "123e4567-e89b-12d3-a456-426614174000"
         self.text = "Aprender DevOps y Cloud en la UNIR"
 
         from src.todoList import create_todo_table
-        self.table = create_todo_table(self.dynamodb)
+        try:
+            self.table = create_todo_table(self.dynamodb)
+        except AttributeError as exc_info:
+            print ("Exception happened: " + str(exc_info))
         print ('End: test_table_no_exists')
         
     def test_get_table_error_KeyError(self):
         print ('---------------------')
         print ('Start: test_get_table_error_KeyError')
-        conn = boto3.client("dynamodb", region_name="us-west-2")
+        conn = boto3.client("dynamodb", region_name="us-east-1")
         from src.todoList import get_item
         try:
             response = get_item("")
