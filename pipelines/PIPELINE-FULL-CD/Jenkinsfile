@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('Staging Devcelop-Production'){
+        stage('Starting develop job'){
             steps{
                 echo 'Starting aging job'
                 build job: 'PIPELINE-FULL-STAGING', parameters: [
