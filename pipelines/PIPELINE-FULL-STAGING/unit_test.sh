@@ -6,6 +6,7 @@ export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 echo "PYTHONPATH: $PYTHONPATH"
 export DYNAMODB_TABLE=todoUnitTestsTable
 export ENDPOINT_OVERRIDE="http://127.0.0.1:8000"
+docker start e0045124bcc0
 nc -vz 127.0.0.1 8000
 if [ $? != 0 ]; then
         echo "El contenedor docker de dynamodb no está levantado"
