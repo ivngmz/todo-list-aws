@@ -95,7 +95,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.text = "Aprender DevOps y Cloud en la UNIR"
 
         from src.todoList import create_todo_table
-        self.table = create_todo_table(self.dynamodb)
+        try:
+            self.table = create_todo_table(self.dynamodb)
+        except AttributeError as exc_info:
+            print ("Exception happened: " + str(exc_info))
         print ('End: test_table_no_exists')
         
     def test_get_table_error_KeyError(self):
