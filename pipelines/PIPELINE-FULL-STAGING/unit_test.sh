@@ -5,8 +5,6 @@ set -x
 export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 echo "PYTHONPATH: $PYTHONPATH"
 export DYNAMODB_TABLE=todoUnitTestsTable
-echo "https://"$Stage"-TodosDynamoDbTable"
-#export ENDPOINT_OVERRIDE="${Stage}-TodosDynamoDbTable"
 export ENDPOINT_OVERRIDE="http://127.0.0.1:8000"
 nc -vz 127.0.0.1 8000
 if [ $? != 0 ]; then
