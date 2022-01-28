@@ -89,7 +89,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         
         # Creo de nuevo la tabla   
         self.dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
-        self.dynamodb = boto3.client('dynamodb', region_name="us-east-1")
+        self.dynamodb = boto3.client('dynamodb', region_name='us-east-1')
         self.is_local = 'true'
         self.uuid = "123e4567-e89b-12d3-a456-426614174000"
         self.text = "Aprender DevOps y Cloud en la UNIR"
