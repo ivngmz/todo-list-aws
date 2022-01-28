@@ -1,9 +1,9 @@
 pipeline {
     agent any
     stages {
-        stage('Starting develop job'){
+        stage('Starting Develop'){
             steps{
-                echo 'Starting aging job'
+                echo 'Starting develop job'
                 build job: 'PIPELINE-FULL-STAGING', parameters: [
                       string(name:'ENVIRONMENT', value: "staging")]
             }
