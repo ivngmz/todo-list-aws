@@ -14,6 +14,7 @@ pipeline {
                 sh "bash pipelines/PIPELINE-FULL-NEWFEATURE/static_test.sh"
                 echo 'Unit testing:'
                 sh "bash pipelines/PIPELINE-FULL-NEWFEATURE/unit_test.sh"
+                cobertura coberturaReportFile: 'coverage.xml'
             }
             post {
                 always {
