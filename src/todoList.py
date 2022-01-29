@@ -144,5 +144,5 @@ def create_todo_table(dynamodb):
     table.meta.client.get_waiter('table_exists').wait(TableName=tableName)
     if (table.table_status != 'ACTIVE'):
         raise AssertionError()
-        
+  
     return table
