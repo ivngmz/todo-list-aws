@@ -102,37 +102,41 @@ class TestDatabaseFunctions(unittest.TestCase):
             print ("Exception happened: " + str(exc_info))
         print ('End: test_table_no_exists')
         
-    def test_get_table_error_KeyError(self):
-        print ('---------------------')
-        print ('Start: test_get_table_error_KeyError')
-        conn = boto3.client("dynamodb", region_name="us-east-1")
-        from src.todoList import get_item
-        try:
-            response = get_item("")
-            print (response)
+    # def test_get_table_error_KeyError(self):
+    #     print ('---------------------')
+    #     print ('Start: test_get_table_error_KeyError')
+    #     from src.todoList import get_item
+    #     from  botocore.exceptions import NoRegionError
+    #     try:
+    #         response = get_item("")
         
-        except KeyError as exc_info:
-            print(str(exc_info))
-        except TypeError as exc_info:
-            print(str(exc_info))
+    #     except KeyError as exc_key_info:
+    #         print(str(exc_key_info))
+    #     except TypeError as exc_Type_info:
+    #         print(str(exc_Type_info))
+    #     except NoRegionError as exc_Region_info:
+    #         print(str(exc_Region_info))
             
-        print ('End: test_get_table_error_KeyError')
+    #     print ('End: test_get_table_error_KeyError')
         
     def test_get_item_error(self):
         print ('---------------------')
         print ('Start: test_get_item_error')
+        from  botocore.exceptions import NoRegionError
         from src.todoList import get_item
         try:
             self.assertRaises(
-                Exception, 
+                NoRegionError, 
                 get_item(
                 "",
                 ""
                 ))
-        except TypeError as exc_info:
-            print(str(exc_info))
+        # except TypeError as exc_info:
+        #     print(str(exc_info))
         except KeyError as exc_info:
             print(str(exc_info))
+        # except NoRegionError as exc_info:
+        #     print(str(exc_info))
 
         print ('End: test_get_item_error')
     	

@@ -6,6 +6,7 @@ export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 echo "PYTHONPATH: $PYTHONPATH"
 export DYNAMODB_TABLE=todoUnitTestsTable
 export ENDPOINT_OVERRIDE="http://127.0.0.1:8000"
+export AWS_DEFAULT_REGION="us-east-1"
 docker start dynamodb
 if [ $? != 0 ]; then    
         ## Crear red de docker
