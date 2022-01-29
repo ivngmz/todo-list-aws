@@ -4,14 +4,15 @@ import unittest
 import pytest
 import boto3
 import botocore
-from moto import mock_dynamodb2, mock_dynamodb2_deprecated
+from moto import mock_dynamodb2
+#, mock_dynamodb2_deprecated
 from botocore.exceptions import ClientError
 import sys
 import os
 import json
 from botocore.utils import get_service_module_name
 
-@mock_dynamodb2_deprecated
+#@mock_dynamodb2_deprecated
 @mock_dynamodb2
 class TestDatabaseFunctions(unittest.TestCase):
     def setUp(self):
@@ -129,6 +130,8 @@ class TestDatabaseFunctions(unittest.TestCase):
                 ""
                 ))
         except TypeError as exc_info:
+            print(str(exc_info))
+        except KeyError as exc_info:
             print(str(exc_info))
 
         print ('End: test_get_item_error')
