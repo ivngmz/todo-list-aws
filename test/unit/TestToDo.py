@@ -114,12 +114,8 @@ class TestDatabaseFunctions(unittest.TestCase):
                 "",
                 ""
                 ))
-        # except TypeError as exc_info:
-        #     print(str(exc_info))
         except KeyError as exc_info:
             print(str(exc_info))
-        # except NoRegionError as exc_info:
-        #     print(str(exc_info))
 
         print ('End: test_get_item_error')
     	
