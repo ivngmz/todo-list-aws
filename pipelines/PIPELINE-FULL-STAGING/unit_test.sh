@@ -25,7 +25,7 @@ echo "Mostrando tablas ..."
 aws dynamodb list-tables --endpoint-url http://127.0.0.1:8000 --region us-east-1
 python -d test/unit/TestToDo.py
 pip show coverage
-coverage run --include=src/todoList.py test/unit/TestToDo.py
+coverage run --branch --include=src/todoList.py test/unit/TestToDo.py
 coverage report -m
 coverage report
 coverage xml
