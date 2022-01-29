@@ -4,14 +4,15 @@ import unittest
 import pytest
 import boto3
 import botocore
-from moto import mock_dynamodb2, mock_dynamodb2_deprecated
+from moto import mock_dynamodb2
+#, mock_dynamodb2_deprecated
 from botocore.exceptions import ClientError
 import sys
 import os
 import json
 from botocore.utils import get_service_module_name
 
-@mock_dynamodb2_deprecated
+#@mock_dynamodb2_deprecated
 @mock_dynamodb2
 class TestDatabaseFunctions(unittest.TestCase):
     def setUp(self):
@@ -89,43 +90,36 @@ class TestDatabaseFunctions(unittest.TestCase):
         
         # Creo de nuevo la tabla   
         self.dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+        self.dynamodb = boto3.client('dynamodb', region_name='us-east-1')
         self.is_local = 'true'
         self.uuid = "123e4567-e89b-12d3-a456-426614174000"
         self.text = "Aprender DevOps y Cloud en la UNIR"
 
         from src.todoList import create_todo_table
-        self.table = create_todo_table(self.dynamodb)
-        print ('End: test_table_no_exists')
-        
-    def test_get_table_error_KeyError(self):
-        print ('---------------------')
-        print ('Start: test_get_table_error_KeyError')
-        conn = boto3.client("dynamodb", region_name="us-west-2")
-        from src.todoList import get_item
         try:
-            response = get_item("")
-            print (response)
-        
-        except KeyError as exc_info:
-            print(str(exc_info))
-        except TypeError as exc_info:
-            print(str(exc_info))
-            
-        print ('End: test_get_table_error_KeyError')
+            self.table = create_todo_table(self.dynamodb)
+        except AttributeError as exc_info:
+            print ("Exception happened: " + str(exc_info))
+        print ('End: test_table_no_exists')
         
     def test_get_item_error(self):
         print ('---------------------')
         print ('Start: test_get_item_error')
+        from  botocore.exceptions import NoRegionError
         from src.todoList import get_item
         try:
             self.assertRaises(
-                Exception, 
+                NoRegionError, 
                 get_item(
                 "",
                 ""
                 ))
-        except TypeError as exc_info:
+        # except TypeError as exc_info:
+        #     print(str(exc_info))
+        except KeyError as exc_info:
             print(str(exc_info))
+        # except NoRegionError as exc_info:
+        #     print(str(exc_info))
 
         print ('End: test_get_item_error')
     	
